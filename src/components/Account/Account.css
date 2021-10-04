@@ -1,0 +1,17 @@
+.account {
+  display: flex;
+  align-items: center;
+}
+
+.account__name {
+  margin: 0 13px 0 0;
+}
+
+.account__logo {
+  background-color: #313131;
+  width: 10.67px;
+  height: 10.67px;
+  padding: 9.75px;
+  overflow: hidden;
+  border-radius: 6px;
+}

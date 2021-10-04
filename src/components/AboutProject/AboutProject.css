@@ -1,0 +1,138 @@
+.about-project {
+  padding: 110px 70px;
+}
+
+.about-project__title {
+  font-size: 22px;
+  line-height: 27px;
+  margin: 0;
+  padding-bottom: 23px;
+  border-bottom: 1px solid #DADADA;
+}
+
+.about-project__content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.about-project__column {
+  margin: 70px 0 110px;
+  width: 550px;
+}
+
+.about-project__subtitle {
+  font-size: 20px;
+  line-height: 24px;
+  margin: 0 0 26px;
+}
+
+.about-project__text {
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.about-project__boot-strip {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+
+.about-project__strip-column {
+  flex-grow: 1;
+}
+
+.about-project__strip-column_front-end {
+  flex-grow: 4;
+}
+
+.about-project__front-end {
+  background-color: #303030;
+  height: 36px;
+  color: #000;
+}
+
+.about-project__indicate {
+  margin: 0;
+  background-color: #3DDC84;
+  padding: 9px 0;
+  color: #000;
+}
+
+.about-project__indicate-name {
+  color: #8B8B8B;
+  margin: 14px 0 0;
+}
+
+.about-project__indicate_front-end {
+  background-color: #303030;
+  color: #FFF;
+}
+
+@media screen and (max-width: 1100px) {
+  .about-project__column {
+    margin: 70px 0 93px;
+    width: 319px;
+  }
+
+  .about-project__text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-project__strip-column_front-end {
+    flex-grow: 3.77;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .about-project {
+    padding: 70px 50px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .about-project {
+    padding: 70px 10px;
+  }
+
+  .about-project__title {
+    font-size: 18px;
+    line-height: 22px;
+    padding-bottom: 28px;
+    margin-bottom: 60px;
+  }
+
+  .about-project__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about-project__subtitle {
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0 0 16px;
+  }
+
+  .about-project__text {
+    font-size: 11px;
+    line-height: 16px;
+    margin-bottom: 60px;
+  }
+
+  .about-project__column {
+    margin: 0;
+    width: 100%;
+  }
+
+  .about-project__text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-project__strip-column_front-end {
+    flex-grow: 3.77;
+  }
+}

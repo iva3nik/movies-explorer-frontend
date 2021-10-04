@@ -1,0 +1,27 @@
+.nav-tab__links {
+  display: flex;
+  background-color: #272727;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.nav-tab__link {
+  margin: 24px 20px;
+  font-size: 13px;
+  line-height: 16px;
+  color: #FFF;
+  transition: .3s linear;
+}
+
+.nav-tab__link:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 767px) {
+  .nav-tab__link {
+    margin: 25px 12px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+}
