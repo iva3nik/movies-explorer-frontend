@@ -39,7 +39,26 @@
   transition: .3s linear;
 }
 
+.movie-card__button-delete {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  background-image:
+    url('../../images/img_delete.svg');
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  transition: .3s linear;
+  margin: 0 9px;
+}
+
 .movie-card__button-like:hover {
+  opacity: .6;
+}
+
+.movie-card__button-delete:hover {
   opacity: .6;
 }
 
