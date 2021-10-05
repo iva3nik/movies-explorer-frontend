@@ -87,6 +87,7 @@
   border-radius: 3px;
   border: none;
   transition: .3s linear;
+  font-weight: 500;
 }
 
 .header__button:hover {
