@@ -8,8 +8,13 @@ function SearchForm() {
     <div className='search-form'>
       <form className='search-form__strip'>
         <img className='search-form__img-loupe' src={loupe} alt='Картинка лупы' />
-        <input className='search-form__string' type='text' placeholder='Фильм' />
-        <button className='search-form__button'></button>
+        <input
+          className='search-form__string'
+          type='text'
+          placeholder='Фильм'
+          required
+        />
+        <button className='search-form__button' type='submit'></button>
       </form>
       <FilterCheckbox />
     </div>
