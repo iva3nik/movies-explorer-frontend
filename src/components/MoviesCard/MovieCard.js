@@ -5,7 +5,7 @@ import picture from '../../images/somepicture.jpg'
 function MovieCard() {
   return (
     <div className='movie-card'>
-      <img className='movie-card__poster' src={picture} alt='' />
+      <img className='movie-card__poster' src={picture} alt='Обложка фильма' />
       <div className='movie-card__strip'>
         <h3 className='movie-card__name'>33 words about design</h3>
         <button className='movie-card__button-like' />
