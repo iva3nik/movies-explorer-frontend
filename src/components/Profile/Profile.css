@@ -44,6 +44,8 @@
   background-color: #202020;
   border: none;
   text-align: right;
+  font-weight: normal;
+  color: white;
 }
 
 .profile__buttons {
@@ -58,7 +60,7 @@
   border: none;
   color: white;
   font-style: normal;
-  font-weight: 500;
+  font-weight: normal;
   font-size: 13px;
   line-height: 16px;
   margin: 0 0 16px;
@@ -76,6 +78,7 @@
 
 .profile__logout {
   color:#EE3465;
+  font-weight: 500;
 }
 
 @media screen and (max-width: 1023px) {

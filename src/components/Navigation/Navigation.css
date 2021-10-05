@@ -46,6 +46,11 @@
   transition: .3s linear;
 }
 
+.navigation__link_account {
+  font-size: 14px;
+  line-height: 16px;
+}
+
 .navigation__link:last-of-type {
   margin-bottom: 0;
 }

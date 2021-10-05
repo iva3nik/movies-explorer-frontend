@@ -10,6 +10,8 @@
   margin: 24px 20px;
   font-size: 13px;
   line-height: 16px;
+  font-style: normal;
+  font-weight: 500;
   color: #FFF;
   transition: .3s linear;
 }

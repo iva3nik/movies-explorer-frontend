@@ -20,6 +20,8 @@
   align-items: center;
   font-size: 12px;
   line-height: 16px;
+  font-style: normal;
+  font-weight: normal;
 }
 
 .header__links_loggedIn {
@@ -28,11 +30,28 @@
   justify-content: space-between;
 }
 
+.header__main-links {
+  font-size: 13px;
+  line-height: 18px;
+  font-style: normal;
+  font-weight: normal;
+}
+
 .header__link {
   margin: 0 30px 0 0;
   text-decoration: none;
   color: #FFF;
   transition: .3s linear;
+}
+
+.header__link_bold {
+  font-weight: 500;
+}
+
+.header__link_account {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
 }
 
 .header__link:hover {

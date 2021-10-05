@@ -5,6 +5,8 @@
 .about-project__title {
   font-size: 22px;
   line-height: 27px;
+  font-style: normal;
+  font-weight: normal;
   margin: 0;
   padding-bottom: 23px;
   border-bottom: 1px solid #DADADA;
@@ -24,12 +26,16 @@
   font-size: 20px;
   line-height: 24px;
   margin: 0 0 26px;
+  font-style: normal;
+  font-weight: normal;
 }
 
 .about-project__text {
   font-size: 14px;
   line-height: 20px;
   margin: 0;
+  font-style: normal;
+  font-weight: normal;
 }
 
 .about-project__boot-strip {
@@ -38,6 +44,8 @@
   font-size: 14px;
   line-height: 17px;
   text-align: center;
+  font-style: normal;
+  font-weight: normal;
 }
 
 .about-project__strip-column {
@@ -64,6 +72,7 @@
 .about-project__indicate-name {
   color: #8B8B8B;
   margin: 14px 0 0;
+  font-weight: 500;
 }
 
 .about-project__indicate_front-end {
@@ -90,6 +99,10 @@
 @media screen and (max-width: 1023px) {
   .about-project {
     padding: 70px 50px;
+  }
+
+  .about-project__indicate-name {
+    font-weight: normal;
   }
 }
 

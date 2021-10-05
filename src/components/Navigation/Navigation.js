@@ -32,7 +32,7 @@ function Navigation() {
         </ul>
         <NavLink
           to='/profile'
-          className='navigation__link'
+          className='navigation__link navigation__link_account'
           activeClassName='navigation__link_active'
         >
           <Account />

@@ -24,7 +24,7 @@ function Header() {
                 <div className='header__main-links'>
                   <NavLink
                     to='/movies'
-                    className='header__link'
+                    className='header__link header__link_bold'
                     activeClassName='header__link_active'
                   >
                     Фильмы
@@ -39,7 +39,7 @@ function Header() {
                 </div>
                 <NavLink
                   to='/profile'
-                  className='header__link'
+                  className='header__link header__link_account'
                   activeClassName='header__link_active'
                 >
                   <Account />
@@ -77,7 +77,7 @@ function Header() {
             <div className='header__main-links'>
               <NavLink
                 to='/movies'
-                className='header__link'
+                className='header__link header__link_bold'
                 activeClassName='header__link_active'
               >
                 Фильмы
@@ -92,7 +92,7 @@ function Header() {
             </div>
             <NavLink
               to='/profile'
-              className='header__link'
+              className='header__link header__link_account'
               activeClassName='header__link_active'
             >
               <Account />

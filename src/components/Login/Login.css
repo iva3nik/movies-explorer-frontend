@@ -33,6 +33,7 @@
 
 .sign__label {
   width: 100%;
+  font-weight: normal;
   border-bottom: 1px solid #424242;
   display: flex;
   flex-direction: column;
@@ -40,7 +41,6 @@
   margin: 0 0 24px;
   color: #8B8B8B;
   padding: 0 0 10px;
-
 }
 
 .sign__input {
@@ -85,7 +85,7 @@
 .sign__text {
   margin: 0 6px 0 0;
   font-style: normal;
-  font-weight: 500;
+  font-weight: normal;
   font-size: 14px;
   line-height: 17px;
   color: #8B8B8B;
@@ -93,7 +93,7 @@
 
 .sign__link {
   font-style: normal;
-  font-weight: 500;
+  font-weight: normal;
   font-size: 14px;
   line-height: 17px;
   color: #4285F4;
@@ -119,6 +119,8 @@
   .sign__button {
     padding: 15px 0 15px;
     margin: 222px 0 16px;
+    font-size: 12px;
+    line-height: 15px;
   }
 
   .sign__text {

@@ -24,6 +24,7 @@
   font-size: 13px;
   line-height: 16px;
   font-weight: 500;
+  font-style: normal;
   margin: 0;
 }
 
@@ -47,6 +48,8 @@
   font-size: 11px;
   line-height: 13px;
   padding-left: 14px;
+  font-weight: normal;
+  font-style: normal;
   margin: 0;
 }
 
@@ -72,24 +75,10 @@
   .movie-card__name {
     font-size: 12px;
     line-height: 15px;
-    font-weight: 500;
-    margin: 0;
-  }
-
-  .movie-card__button-like {
-    width: 14px;
-    height: 12px;
-    background-image:
-      url('../../images/heart.svg');
-    background-color: transparent;
-    border: none;
   }
 
   .movie-card__duration {
-    color: #8B8B8B;
     font-size: 10px;
     line-height: 12px;
-    padding-left: 14px;
-    margin: 0;
   }
 }
