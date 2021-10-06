@@ -1,0 +1,16 @@
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts/fonts.css);
+
+.page {
+  margin: 0 auto;
+  font-family: 'Inter', 'Helvetica', 'Arial', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #202020;
+  color: #FFF;
+  min-width: 320px;
+  max-width: 100vw;
+  min-height: 100vh;
+}
