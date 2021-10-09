@@ -1,18 +1,42 @@
-import { BEATFILM_MOVIES } from "./constants";
+import { MOVIES_SEARCH } from "./constants";
 
-const hadnleResponse = (res) => {
+const checkStatusResponse = (res) => {
   if (!res.ok) {
     return Promise.reject(`Error: ${res.status}`);
   }
   return res.json();
 }
 
-export const getMoviesCardList = () => {
-  return fetch(`${BEATFILM_MOVIES}`, {
+export const register = ({ name, email, password }) => {
+  return fetch(`${MOVIES_SEARCH}/signup`, {
+    method: 'POST',
     headers: {
-      'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify({ name, email, password }),
   })
-  .then(hadnleResponse);
+  .then(checkStatusResponse);
 };
 
+export const authorize = ({ email, password }) => {
+  return fetch(`${MOVIES_SEARCH}/signin`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  }).then(checkStatusResponse);
+};
+
+export const logout = ({ email }) => {
+  return fetch(`${MOVIES_SEARCH}/signout`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+    }),
+  }).then(checkStatusResponse);
+};
