@@ -110,7 +110,6 @@ function App() {
             component={Profile}
             loggedIn={loggedIn}
             logout={handleLogout}
-            currentUser={currentUser}
           />
           <Route path='*'>
             <PageNotFound />
