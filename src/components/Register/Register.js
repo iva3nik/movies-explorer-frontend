@@ -29,7 +29,7 @@ function Register({ handleRegister }) {
         <Link to='/' className='sign__start-page'>
           <img className='sign__logo-image' src={logo} alt='Логотип' />
         </Link>
-        <h2 className='sign__title'>Привет, Иван!</h2>
+        <h2 className='sign__title'>Добро пожаловать!</h2>
         <form
           className='sign__form'
           onSubmit={handleSubmit}

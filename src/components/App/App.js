@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import './App.css';
-import { Route, Switch, Redirect } from 'react-router';
+import { Route, Switch, Redirect, useHistory } from 'react-router';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -9,18 +9,24 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import InfoTooltip from '../InfoTooltip.js/InfoTooltip';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import * as main from '../../utils/MainApi';
 
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
+  const history = useHistory();
 
 
   function handleRegister({ name, email, password }) {
     main.register({ name, email, password })
       .then((data) => {
-        console.log(data)
+        setIsRegistered(true);
+        setIsInfoTooltopOpen(true);
+        history.push('/signin')
       })
       .catch((err) => console.log(err));
   };
@@ -28,6 +34,7 @@ function App() {
   function handleLogin({ email, password }) {
     main.authorize({ email, password })
       .then((res) => {
+        setIsInfoTooltopOpen(true);
         setLoggedIn(true);
       })
       .catch((err) => console.log(err));
@@ -35,7 +42,12 @@ function App() {
 
   function handleLogout() {
     setLoggedIn(false);
+    localStorage.removeItem('jwt');
   };
+
+  function closePopup() {
+    setIsInfoTooltopOpen(false);
+  }
 
   return (
     <div className="page">
@@ -77,6 +89,11 @@ function App() {
           <PageNotFound />
         </Route>
       </Switch>
+      <InfoTooltip
+        isOpen={isInfoTooltopOpen}
+        onClose={closePopup}
+        isRegistered={isRegistered}
+      />
     </div>
   );
 }

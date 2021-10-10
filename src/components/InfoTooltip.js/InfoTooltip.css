@@ -1,0 +1,135 @@
+.popup {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color:rgba(0, 0, 0, .5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: visibility .5s, opacity .5s linear;
+  visibility: hidden;
+}
+
+.popup_opened {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup__container {
+  position: relative;
+}
+
+.popup__container_form {
+  width: 430px;
+  border-radius: 10px;
+  position: relative;
+  background-color: white;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+}
+
+.popup__button-confirm {
+  margin: 60px auto 32px;
+  background-color: white;
+  border: none;
+  width: 120px;
+  height: 120px;
+  background-size: 120px 120px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 0;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.popup__button-confirm:hover {
+  cursor: pointer;
+  opacity: .6;
+}
+
+.popup__button-confirm_type_successful {
+  background-image:
+    url(../../images/successful_registration.svg);
+}
+
+.popup__button-confirm_type_failed {
+  background-image:
+    url(../../images/failed_registration.svg);
+}
+
+.popup__title {
+  width: 83.7%;
+  color: black;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 34px auto 18px;
+}
+
+.popup__title_type_info-tool {
+  text-align: center;
+  margin: 0 auto 60px;
+}
+
+.popup__close-form {
+  width: 40px;
+  height: 40px;
+  background-image:
+    url(../../images/сlose_icon.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 40px 40px;
+  background-color: transparent;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  border: none;
+  opacity: 1;
+  transition: .3s linear;
+  padding: 0;
+  transform: rotate(-45deg);
+
+}
+
+.popup__close-form:hover {
+  cursor: pointer;
+  opacity: .6;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__container_form {
+    width: 282px;
+  }
+
+  .popup__button-confirm {
+    margin: 50px auto 40px;
+  }
+
+  .popup__title {
+    font-size: 18px;
+    line-height: 22px;
+    margin: 25px auto 45px;
+  }
+
+  .popup__title_type_info-tool {
+    margin: 0 auto 50px;
+  }
+
+  .popup__close-form {
+    top: -39px;
+    right: 0;
+    width: 26px;
+    height: 26px;
+    background-size: 26px 26px;
+  }
+
+  .popup__close-form_infotool {
+    top: -39px;
+    right: 128px;
+  }
+}
