@@ -6,9 +6,7 @@ import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import Navigation from '../Navigation/Navigation';
 import Account from '../Account/Account';
 
-function Header() {
-  const loggedIn = false;
-
+function Header({ loggedIn, emailUser }) {
   return (
    <>
       <Route exact path='/'>
@@ -42,7 +40,7 @@ function Header() {
                   className='header__link header__link_account'
                   activeClassName='header__link_active'
                 >
-                  <Account />
+                  <Account emailUser={emailUser} />
                 </NavLink>
               </nav>
             </>
@@ -95,7 +93,7 @@ function Header() {
               className='header__link header__link_account'
               activeClassName='header__link_active'
             >
-              <Account />
+              <Account emailUser={emailUser} />
             </NavLink>
           </nav>
         </header>

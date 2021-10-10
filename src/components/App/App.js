@@ -18,6 +18,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
+  const [emailUser, setEmailUser] = useState('');
   const history = useHistory();
 
 
@@ -34,8 +35,10 @@ function App() {
   function handleLogin({ email, password }) {
     main.authorize({ email, password })
       .then((res) => {
-        setIsInfoTooltopOpen(true);
+        localStorage.setItem('jwt', res.token);
+        setEmailUser(email);
         setLoggedIn(true);
+        history.push('/movies');
       })
       .catch((err) => console.log(err));
   };
@@ -47,6 +50,7 @@ function App() {
 
   function closePopup() {
     setIsInfoTooltopOpen(false);
+    setIsRegistered(false);
   }
 
   return (
@@ -67,7 +71,7 @@ function App() {
           )}
         </Route>
         <Route exact path='/'>
-          <Main />
+          <Main emailUser={emailUser} />
         </Route>
         <ProtectedRoute
           path='/movies'
@@ -83,7 +87,8 @@ function App() {
           path='/profile'
           component={Profile}
           loggedIn={loggedIn}
-          loggedOut={handleLogout}
+          logout={handleLogout}
+          emailUser={emailUser}
         />
         <Route path='*'>
           <PageNotFound />

@@ -2,7 +2,7 @@ import React from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
 
-function Profile() {
+function Profile({ logout,  emailUser }) {
   return (
     <div>
       <Header />
@@ -22,7 +22,7 @@ function Profile() {
             />
           </label>
           <label className='profile__label'>
-            E-mail
+            {emailUser}
             <input
               className='profile__input'
               required
@@ -34,7 +34,12 @@ function Profile() {
         </form>
         <div className='profile__buttons'>
           <button className='profile__button profile__edit'>Редактировать</button>
-          <button className='profile__button profile__logout'>Выйти из аккаунта</button>
+          <button
+            className='profile__button profile__logout'
+            onClick={logout}
+          >
+            Выйти из аккаунта
+          </button>
         </div>
       </section>
     </div>
