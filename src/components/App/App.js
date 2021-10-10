@@ -30,6 +30,7 @@ function App() {
         history.push('/signin')
       })
       .catch((err) => console.log(err));
+      setIsInfoTooltopOpen(true);
   };
 
   function handleLogin({ email, password }) {
