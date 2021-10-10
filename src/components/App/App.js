@@ -10,15 +10,16 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import InfoTooltip from '../InfoTooltip.js/InfoTooltip';
-import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import * as main from '../../utils/MainApi';
+import { AppContext } from '../../contexts/AppContext';
 
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
-  const [emailUser, setEmailUser] = useState('');
+  const [currentUser, setCurrentUser] = useState({});
   const history = useHistory();
 
 
@@ -37,16 +38,35 @@ function App() {
     main.authorize({ email, password })
       .then((res) => {
         localStorage.setItem('jwt', res.token);
-        setEmailUser(email);
+        setCurrentUser({ ...currentUser, res });
         setLoggedIn(true);
         history.push('/movies');
       })
       .catch((err) => console.log(err));
   };
 
+  React.useEffect(() => {
+    checkToken();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function checkToken() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      main.getContent(jwt)
+        .then((res) => {
+          setCurrentUser({ ...currentUser, res });
+          setLoggedIn(true);
+          history.push('/movies');
+        })
+        .catch((err) => console.log(err));
+    };
+  };
+
   function handleLogout() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
+    history.push('/signin');
   };
 
   function closePopup() {
@@ -55,52 +75,59 @@ function App() {
   }
 
   return (
-    <div className="page">
-      <Switch>
-        <Route path='/signin'>
+    <AppContext.Provider
+      value={{
+        loggedIn: loggedIn,
+        currentUser: currentUser,
+      }}
+    >
+      <div className="page">
+        <Switch>
+          <Route path='/signin'>
+            {loggedIn ? (
+              <Redirect to='/' />
+            ) : (
+              <Login handleLogin={handleLogin} />
+            )}
+          </Route>
+          <Route path='/signup'>
           {loggedIn ? (
-            <Redirect to='/' />
-          ) : (
-            <Login handleLogin={handleLogin} />
-          )}
-        </Route>
-        <Route path='/signup'>
-        {loggedIn ? (
-            <Redirect to='/' />
-          ) : (
-            <Register handleRegister={handleRegister} />
-          )}
-        </Route>
-        <Route exact path='/'>
-          <Main emailUser={emailUser} />
-        </Route>
-        <ProtectedRoute
-          path='/movies'
-          component={Movies}
-          loggedIn={loggedIn}
+              <Redirect to='/' />
+            ) : (
+              <Register handleRegister={handleRegister} />
+            )}
+          </Route>
+          <Route exact path='/'>
+            <Main currentUser={currentUser} />
+          </Route>
+          <ProtectedRoute
+            path='/movies'
+            component={Movies}
+            loggedIn={loggedIn}
+          />
+          <ProtectedRoute
+            path='/saved-movies'
+            component={SavedMovies}
+            loggedIn={loggedIn}
+          />
+          <ProtectedRoute
+            path='/profile'
+            component={Profile}
+            loggedIn={loggedIn}
+            logout={handleLogout}
+            currentUser={currentUser}
+          />
+          <Route path='*'>
+            <PageNotFound />
+          </Route>
+        </Switch>
+        <InfoTooltip
+          isOpen={isInfoTooltopOpen}
+          onClose={closePopup}
+          isRegistered={isRegistered}
         />
-        <ProtectedRoute
-          path='/saved-movies'
-          component={SavedMovies}
-          loggedIn={loggedIn}
-        />
-        <ProtectedRoute
-          path='/profile'
-          component={Profile}
-          loggedIn={loggedIn}
-          logout={handleLogout}
-          emailUser={emailUser}
-        />
-        <Route path='*'>
-          <PageNotFound />
-        </Route>
-      </Switch>
-      <InfoTooltip
-        isOpen={isInfoTooltopOpen}
-        onClose={closePopup}
-        isRegistered={isRegistered}
-      />
-    </div>
+      </div>
+    </AppContext.Provider>
   );
 }
 

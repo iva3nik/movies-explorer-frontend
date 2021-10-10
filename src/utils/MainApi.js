@@ -40,3 +40,14 @@ export const logout = ({ email }) => {
     }),
   }).then(checkStatusResponse);
 };
+
+export const getContent = (token) => {
+  return fetch(`${MOVIES_SEARCH}/users/me`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+    .then(checkStatusResponse)
+};

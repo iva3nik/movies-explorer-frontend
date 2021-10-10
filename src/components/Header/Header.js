@@ -5,8 +5,12 @@ import { Link, Route, NavLink } from 'react-router-dom'
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import Navigation from '../Navigation/Navigation';
 import Account from '../Account/Account';
+import { AppContext } from '../../contexts/AppContext';
 
-function Header({ loggedIn, emailUser }) {
+function Header() {
+
+  const currentUser = React.useContext(AppContext);
+
   return (
    <>
       <Route exact path='/'>
@@ -14,7 +18,7 @@ function Header({ loggedIn, emailUser }) {
           <Link to='/'>
             <img className='header__logo-image' src={logo} alt='Логотип' />
           </Link>
-          {loggedIn ? (
+          {currentUser.loggedIn ? (
             <>
               <BurgerMenu />
               <Navigation />
@@ -40,7 +44,7 @@ function Header({ loggedIn, emailUser }) {
                   className='header__link header__link_account'
                   activeClassName='header__link_active'
                 >
-                  <Account emailUser={emailUser} />
+                  <Account />
                 </NavLink>
               </nav>
             </>
@@ -93,7 +97,7 @@ function Header({ loggedIn, emailUser }) {
               className='header__link header__link_account'
               activeClassName='header__link_active'
             >
-              <Account emailUser={emailUser} />
+              <Account nameUser={currentUser.name} />
             </NavLink>
           </nav>
         </header>

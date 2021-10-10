@@ -1,16 +1,20 @@
 import React from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
+import { AppContext } from '../../contexts/AppContext';
 
-function Profile({ logout,  emailUser }) {
+function Profile({ logout }) {
+
+  const currentUser = React.useContext(AppContext);
+
   return (
     <div>
       <Header />
       <section className='profile'>
-        <h2 className='profile__title'>Привет, Иван!</h2>
+        <h2 className='profile__title'>Привет, {currentUser.name}!</h2>
         <form className='profile__form'>
           <label className='profile__label'>
-            Имя
+            {currentUser.name}
             <input
               className='profile__input'
               required
@@ -22,7 +26,7 @@ function Profile({ logout,  emailUser }) {
             />
           </label>
           <label className='profile__label'>
-            {emailUser}
+            {currentUser.email}
             <input
               className='profile__input'
               required
