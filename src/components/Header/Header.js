@@ -7,7 +7,7 @@ import Navigation from '../Navigation/Navigation';
 import Account from '../Account/Account';
 import { AppContext } from '../../contexts/AppContext';
 
-function Header() {
+function Header({ loggedIn }) {
 
   const currentUser = React.useContext(AppContext);
 
@@ -18,7 +18,7 @@ function Header() {
           <Link to='/'>
             <img className='header__logo-image' src={logo} alt='Логотип' />
           </Link>
-          {currentUser.loggedIn ? (
+          {loggedIn ? (
             <>
               <BurgerMenu />
               <Navigation />

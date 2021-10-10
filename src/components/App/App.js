@@ -75,12 +75,7 @@ function App() {
   }
 
   return (
-    <AppContext.Provider
-      value={{
-        loggedIn: loggedIn,
-        currentUser: currentUser,
-      }}
-    >
+    <AppContext.Provider value={currentUser}>
       <div className="page">
         <Switch>
           <Route path='/signin'>
