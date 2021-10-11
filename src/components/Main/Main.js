@@ -9,10 +9,10 @@ import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 
-function Main() {
+function Main({ loggedIn }) {
   return (
     <div className='content'>
-      <Header />
+      <Header loggedIn={loggedIn} />
       <main className='main-content'>
         <Promo />
         <NavTab />

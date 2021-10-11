@@ -104,7 +104,7 @@ function App() {
             )}
           </Route>
           <Route exact path='/'>
-            <Main />
+            <Main loggedIn={loggedIn} />
           </Route>
           <ProtectedRoute
             path='/movies'
