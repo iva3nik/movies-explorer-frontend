@@ -22,6 +22,17 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const history = useHistory();
 
+  React.useEffect(() => {
+    Promise.all([main.getDataUser(), main.getUserMovies()])
+      .then(([currentUserData, currentSavedMovies]) => {
+        setCurrentUser({
+          ...currentUser, currentUserData
+        });
+      })
+      .catch((err) => console.log(err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   function handleRegister({ name, email, password }) {
     main.register({ name, email, password })
@@ -53,7 +64,7 @@ function App() {
   function checkToken() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
-      main.getContent(jwt)
+      main.getDataUser(jwt)
         .then((res) => {
           setCurrentUser({ ...currentUser, res });
           setLoggedIn(true);

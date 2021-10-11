@@ -10,6 +10,7 @@ const checkStatusResponse = (res) => {
 export const register = ({ name, email, password }) => {
   return fetch(`${MOVIES_SEARCH}/signup`, {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -21,6 +22,7 @@ export const register = ({ name, email, password }) => {
 export const authorize = ({ email, password }) => {
   return fetch(`${MOVIES_SEARCH}/signin`, {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -41,13 +43,39 @@ export const logout = ({ email }) => {
   }).then(checkStatusResponse);
 };
 
-export const getContent = (token) => {
+export const getDataUser = (token) => {
   return fetch(`${MOVIES_SEARCH}/users/me`, {
     method: 'GET',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     }
   })
     .then(checkStatusResponse)
+};
+
+export const patchDataUser = ({ name, email }) => {
+  return fetch(`${MOVIES_SEARCH}/users/me`, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+    }),
+  }).then(checkStatusResponse);
+};
+
+export const getUserMovies = () => {
+  return fetch(`${MOVIES_SEARCH}/movies`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  }).then(checkStatusResponse);
 };
