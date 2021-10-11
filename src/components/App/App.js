@@ -56,6 +56,20 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  function updateProfile({ name, email }) {
+    main.patchDataUser({ name, email })
+      .then((res) => {
+        if (res) {
+          setCurrentUser({
+            ...currentUser,
+            name: res.name,
+            email: res.email,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   React.useEffect(() => {
     checkToken();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,7 +91,7 @@ function App() {
   function handleLogout() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
-    history.push('/signin');
+    history.push('/');
   };
 
   function closePopup() {
@@ -121,6 +135,7 @@ function App() {
             component={Profile}
             loggedIn={loggedIn}
             logout={handleLogout}
+            updateProfile={updateProfile}
           />
           <Route path='*'>
             <PageNotFound />

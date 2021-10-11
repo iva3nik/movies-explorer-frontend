@@ -5,11 +5,8 @@ import { Link, Route, NavLink } from 'react-router-dom'
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import Navigation from '../Navigation/Navigation';
 import Account from '../Account/Account';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Header({ loggedIn }) {
-
-  const currentUser = React.useContext(CurrentUserContext);
 
   return (
    <>
@@ -97,7 +94,7 @@ function Header({ loggedIn }) {
               className='header__link header__link_account'
               activeClassName='header__link_active'
             >
-              <Account nameUser={currentUser.name} />
+              <Account />
             </NavLink>
           </nav>
         </header>
