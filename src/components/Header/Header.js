@@ -5,11 +5,11 @@ import { Link, Route, NavLink } from 'react-router-dom'
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import Navigation from '../Navigation/Navigation';
 import Account from '../Account/Account';
-import { AppContext } from '../../contexts/AppContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Header({ loggedIn }) {
 
-  const currentUser = React.useContext(AppContext);
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
    <>

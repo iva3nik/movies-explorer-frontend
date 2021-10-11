@@ -12,7 +12,7 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import InfoTooltip from '../InfoTooltip.js/InfoTooltip';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import * as main from '../../utils/MainApi';
-import { AppContext } from '../../contexts/AppContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
 
@@ -75,7 +75,7 @@ function App() {
   }
 
   return (
-    <AppContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Switch>
           <Route path='/signin'>
@@ -93,7 +93,7 @@ function App() {
             )}
           </Route>
           <Route exact path='/'>
-            <Main currentUser={currentUser} />
+            <Main />
           </Route>
           <ProtectedRoute
             path='/movies'
@@ -121,7 +121,7 @@ function App() {
           isRegistered={isRegistered}
         />
       </div>
-    </AppContext.Provider>
+    </CurrentUserContext.Provider>
   );
 }
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
-import { AppContext } from '../../contexts/AppContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile({ logout }) {
 
-  const currentUser = React.useContext(AppContext);
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <div>
