@@ -31,32 +31,35 @@ function Profile({ logout, updateProfile }) {
         <h2 className='profile__title'>Привет, {currentUser.name}!</h2>
         <form className='profile__form' onSubmit={handleSubmit}>
           <label className='profile__label'>
-            {currentUser.name}
+            Имя
             <input
               className='profile__input'
               required
               name='name'
               type='text'
-              placeholder='Ivan'
+              placeholder={currentUser.name}
               minLength='2'
               maxLength='40'
               onChange={handleChange}
+              value={currentUser.name || 'default'}
             />
           </label>
           <label className='profile__label'>
-            {currentUser.email}
+            E-mail
             <input
               className='profile__input'
               required
               name='email'
               type='email'
-              placeholder='i3n@yandxex.ru'
+              placeholder={currentUser.email}
               onChange={handleChange}
+              value={currentUser.email || 'default'}
             />
           </label>
           <button
             className='profile__button profile__edit'
             type='submit'
+            onClick={handleSubmit}
           >
             Редактировать
           </button>
@@ -64,6 +67,7 @@ function Profile({ logout, updateProfile }) {
         <button
           className='profile__button profile__logout'
           onClick={logout}
+          type='button'
         >
           Выйти из аккаунта
         </button>

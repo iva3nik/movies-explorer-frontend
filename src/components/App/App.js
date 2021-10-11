@@ -20,6 +20,8 @@ function App() {
   const [isRegistered, setIsRegistered] = useState(false);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [isSending, setIsSending] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   React.useEffect(() => {
@@ -35,17 +37,20 @@ function App() {
 
 
   function handleRegister({ name, email, password }) {
+    setIsSending(true);
     main.register({ name, email, password })
       .then((data) => {
         setIsRegistered(true);
         setIsInfoTooltopOpen(true);
         history.push('/signin')
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setIsSending(false));
       setIsInfoTooltopOpen(true);
   };
 
   function handleLogin({ email, password }) {
+    setIsSending(true);
     main.authorize({ email, password })
       .then((res) => {
         localStorage.setItem('jwt', res.token);
@@ -53,10 +58,13 @@ function App() {
         setLoggedIn(true);
         history.push('/movies');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setIsSending(false));
   };
 
   function updateProfile({ name, email }) {
+    setIsLoading(true);
+    setIsSending(true);
     main.patchDataUser({ name, email })
       .then((res) => {
         if (res) {
@@ -67,7 +75,11 @@ function App() {
           });
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+        setIsSending(false);
+      })
   };
 
   React.useEffect(() => {
@@ -107,14 +119,14 @@ function App() {
             {loggedIn ? (
               <Redirect to='/' />
             ) : (
-              <Login handleLogin={handleLogin} />
+              <Login handleLogin={handleLogin} isSending={isSending} />
             )}
           </Route>
           <Route path='/signup'>
           {loggedIn ? (
               <Redirect to='/' />
             ) : (
-              <Register handleRegister={handleRegister} />
+              <Register handleRegister={handleRegister} isSending={isSending} />
             )}
           </Route>
           <Route exact path='/'>
@@ -136,6 +148,8 @@ function App() {
             loggedIn={loggedIn}
             logout={handleLogout}
             updateProfile={updateProfile}
+            isSending={isSending}
+            isLoading={isLoading}
           />
           <Route path='*'>
             <PageNotFound />

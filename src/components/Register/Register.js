@@ -2,25 +2,19 @@ import React from 'react';
 import './Register.css';
 import logo from '../../images/logo.svg';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useFormWithValidation } from '../../hooks/useFormAndValidation';
 
-function Register({ handleRegister }) {
+function Register({ handleRegister, isSending }) {
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
-  const [data, setData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
+  const { name, email, password } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { name, email, password } = data;
-    handleRegister({ name, email, password });
+    isValid &&
+      handleRegister({ name, email, password }, () => {
+        resetForm();
+      });
   }
 
   return (
@@ -45,9 +39,11 @@ function Register({ handleRegister }) {
               minLength='2'
               maxLength='40'
               onChange={handleChange}
-              value={data.name}
+              value={name || ''}
+              disabled={isSending}
             />
           </label>
+          <span className='sign__input-error'>{errors.name}</span>
           <label className='sign__label'>
             E-mail
             <input
@@ -57,9 +53,11 @@ function Register({ handleRegister }) {
               type='email'
               placeholder='i3n@yandxex.ru'
               onChange={handleChange}
-              value={data.email}
+              value={email || ''}
+              disabled={isSending}
             />
           </label>
+          <span className='sign__input-error'>{errors.email}</span>
           <label className='sign__label'>
             Пароль
             <input
@@ -71,12 +69,17 @@ function Register({ handleRegister }) {
               minLength='2'
               maxLength='40'
               onChange={handleChange}
-              value={data.password}
+              value={password || ''}
+              disabled={isSending}
             />
           </label>
+          <span className='sign__input-error'>{errors.password}</span>
           <button
-            className='sign__button'
+            className={
+              isValid ? 'sign__button' : 'sign__button sign__button_disabled'
+            }
             type='submit'
+            disabled={!isValid || isSending}
           >
             Зарегистрироваться
           </button>
