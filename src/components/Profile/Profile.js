@@ -68,7 +68,7 @@ function Profile({ logout, updateProfile, isSending, isLoading }) {
             type='submit'
             disabled={!isValid || isSending}
           >
-            Редактировать
+            {isValid ? 'Сохранить' : 'Редактировать'}
           </button>
         </form>
         )}
