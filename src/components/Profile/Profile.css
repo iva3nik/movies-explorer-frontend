@@ -33,6 +33,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .profile__label:last-of-type {
@@ -46,6 +47,18 @@
   text-align: right;
   font-weight: normal;
   color: white;
+}
+
+.profile__input-error {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #EE3465;
+  position: absolute;
+  left: 0;
+  top: 30px;
+  width: 100%;
 }
 
 .profile__button {
@@ -62,6 +75,10 @@
   transition: .3s linear;
 }
 
+.profile__button_disabled {
+  opacity: .6;
+}
+
 .profile__button:hover {
   opacity: .6;
 }
@@ -73,6 +90,10 @@
 .profile__logout {
   color:#EE3465;
   font-weight: 500;
+}
+
+input:-webkit-autofill {
+  transition: all 5000s ease-in-out 0s;
 }
 
 @media screen and (max-width: 1023px) {

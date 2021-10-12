@@ -16,7 +16,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -34,7 +34,6 @@ function App() {
       .catch((err) => console.log(err));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   function handleRegister({ name, email, password }) {
     setIsSending(true);

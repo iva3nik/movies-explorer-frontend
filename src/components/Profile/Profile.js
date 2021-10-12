@@ -2,26 +2,22 @@ import React from 'react';
 import './Profile.css';
 import Header from '../Header/Header';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { useState } from 'react';
+import useFormWithValidation from '../../hooks/useFormAndValidation';
+import Preloader from '../Preloader/Preloader';
 
-function Profile({ logout, updateProfile }) {
-
+function Profile({ logout, updateProfile, isSending, isLoading }) {
   const currentUser = React.useContext(CurrentUserContext);
 
-  const [data, setData] = useState({
-    name: '',
-    email: '',
-  });
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
+  const { name, email } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { name, email } = data;
-    updateProfile({ name, email });
+    isValid &&
+      updateProfile({ name, email }, () => {
+        resetForm();
+      });
   }
 
   return (
@@ -29,7 +25,10 @@ function Profile({ logout, updateProfile }) {
       <Header />
       <section className='profile'>
         <h2 className='profile__title'>Привет, {currentUser.name}!</h2>
-        <form className='profile__form' onSubmit={handleSubmit}>
+        {isLoading ? (
+          <Preloader />
+        ) : (
+          <form className='profile__form' onSubmit={handleSubmit}>
           <label className='profile__label'>
             Имя
             <input
@@ -41,8 +40,10 @@ function Profile({ logout, updateProfile }) {
               minLength='2'
               maxLength='40'
               onChange={handleChange}
-              value={currentUser.name || 'default'}
+              value={name || ''}
+              disabled={isSending}
             />
+            <span className='profile__input-error'>{errors.name}</span>
           </label>
           <label className='profile__label'>
             E-mail
@@ -53,17 +54,24 @@ function Profile({ logout, updateProfile }) {
               type='email'
               placeholder={currentUser.email}
               onChange={handleChange}
-              value={currentUser.email || 'default'}
+              value={email || ''}
+              disabled={isSending}
             />
+            <span className='profile__input-error'>{errors.email}</span>
           </label>
           <button
-            className='profile__button profile__edit'
+            className={
+              isValid ?
+              'profile__button profile__edit' :
+              'profile__button profile__edit profile__button_disabled'
+            }
             type='submit'
-            onClick={handleSubmit}
+            disabled={!isValid || isSending}
           >
             Редактировать
           </button>
         </form>
+        )}
         <button
           className='profile__button profile__logout'
           onClick={logout}

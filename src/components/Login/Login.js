@@ -1,28 +1,21 @@
 import React from 'react';
-import { useState } from 'react';
 import './Login.css';
 import logo from '../../images/logo.svg';
 import { Link } from 'react-router-dom';
+import useFormWithValidation from '../../hooks/useFormAndValidation';
 
-function Login({ handleLogin}) {
+function Login({ handleLogin, isSending }) {
 
-  const [data, setData] = useState({
-    email: '',
-    password: '',
-  });
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
+  const { email, password } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!data.email || !data.password) {
-      return
-    }
-    const { email, password } = data;
-    handleLogin({ email, password });
+    isValid &&
+      handleLogin({ email, password }, () => {
+        resetForm();
+      });
   }
 
   return (
@@ -45,8 +38,10 @@ function Login({ handleLogin}) {
               type='email'
               placeholder=''
               onChange={handleChange}
-              value={data.email}
+              value={email || ''}
+              disabled={isSending}
             />
+            <span className='sign__input-error'>{errors.email}</span>
           </label>
           <label className='sign__label'>
             Пароль
@@ -59,12 +54,17 @@ function Login({ handleLogin}) {
               minLength='2'
               maxLength='40'
               onChange={handleChange}
-              value={data.password}
+              value={password || ''}
+              disabled={isSending}
             />
+            <span className='sign__input-error'>{errors.password}</span>
           </label>
           <button
-            className='sign__button'
-            type='subit'
+            className={
+              isValid ? 'sign__button' : 'sign__button sign__button_disabled'
+            }
+            type='submit'
+            disabled={!isValid || isSending}
           >
             Войти
           </button>
