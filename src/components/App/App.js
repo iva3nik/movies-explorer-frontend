@@ -12,6 +12,7 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import InfoTooltip from '../InfoTooltip.js/InfoTooltip';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import * as main from '../../utils/MainApi';
+import * as movies from '../../utils/MoviesApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
   const history = useHistory();
 
   React.useEffect(() => {
-    Promise.all([main.getDataUser(), main.getUserMovies()])
+    Promise.all([main.getDataUser(), main.getMovies()])
       .then(([currentUserData, currentSavedMovies]) => {
         setCurrentUser({
           ...currentUser, currentUserData
@@ -110,6 +111,18 @@ function App() {
     setIsRegistered(false);
   }
 
+  function getMoviesList(movie)  {
+    if (loggedIn) {
+      setIsLoading(true);
+      movies.getMoviesCardList()
+        .then((moviesList) => {
+          localStorage.setItem('movies', JSON.stringify(moviesList));
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setIsLoading(false));
+    };
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -134,6 +147,8 @@ function App() {
           <ProtectedRoute
             path='/movies'
             component={Movies}
+            getMovies={getMoviesList}
+            isLoading={isLoading}
             loggedIn={loggedIn}
           />
           <ProtectedRoute

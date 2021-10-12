@@ -69,7 +69,7 @@ export const patchDataUser = ({ name, email }) => {
   }).then(checkStatusResponse);
 };
 
-export const getUserMovies = () => {
+export const getMovies = () => {
   return fetch(`${MOVIES_SEARCH}/movies`, {
     method: 'GET',
     credentials: 'include',
