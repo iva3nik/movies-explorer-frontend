@@ -5,8 +5,12 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
+import { AppContext } from '../../contexts/AppContext';
 
 function Movies({ getMovies, isLoading }) {
+  const value = React.useContext(AppContext);
+  const movies = value.movies;
+
   return (
     <div>
       <Header />
@@ -15,7 +19,7 @@ function Movies({ getMovies, isLoading }) {
         getMovies={getMovies}
       />
       {isLoading && <Preloader />}
-      <MoviesCardList />
+      {movies && <MoviesCardList />}
       <Footer />
     </div>
   );

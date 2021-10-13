@@ -12,41 +12,55 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import InfoTooltip from '../InfoTooltip.js/InfoTooltip';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import * as main from '../../utils/MainApi';
-import * as movies from '../../utils/MoviesApi';
+import * as films from '../../utils/MoviesApi';
+import { AppContext } from '../../contexts/AppContext';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isSending, setIsSending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [movies, setMovies] = useState([]);
   const history = useHistory();
 
   React.useEffect(() => {
     Promise.all([main.getDataUser(), main.getMovies()])
       .then(([currentUserData, currentSavedMovies]) => {
-        setCurrentUser({
-          ...currentUser, currentUserData
-        });
+
       })
       .catch((err) => console.log(err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
+    checkToken();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleRegister({ name, email, password }) {
     setIsSending(true);
     main.register({ name, email, password })
-      .then((data) => {
+      .then((res) => {
         setIsRegistered(true);
         setIsInfoTooltopOpen(true);
-        history.push('/signin')
+        main.authorize({ email, password })
+          .then((res) => {
+            localStorage.setItem('jwt', res.token);
+            setLoggedIn(true);
+            history.push('/movies');
+          })
+          .catch((err) => console.log(err));
+        history.push('/movies');
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err);
+        setIsInfoTooltopOpen(true);
+      })
       .finally(() => setIsSending(false));
-      setIsInfoTooltopOpen(true);
   };
 
   function handleLogin({ email, password }) {
@@ -54,7 +68,6 @@ function App() {
     main.authorize({ email, password })
       .then((res) => {
         localStorage.setItem('jwt', res.token);
-        setCurrentUser({ ...currentUser, res });
         setLoggedIn(true);
         history.push('/movies');
       })
@@ -82,17 +95,13 @@ function App() {
       })
   };
 
-  React.useEffect(() => {
-    checkToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   function checkToken() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       main.getDataUser(jwt)
         .then((res) => {
-          setCurrentUser({ ...currentUser, res });
+          console.log(res);
+          setCurrentUser(res.user);
           setLoggedIn(true);
           history.push('/movies');
         })
@@ -100,9 +109,12 @@ function App() {
     };
   };
 
+  React.useEffect(() => console.log(currentUser));
+
   function handleLogout() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
+    setMovies([]);
     history.push('/');
   };
 
@@ -111,12 +123,13 @@ function App() {
     setIsRegistered(false);
   }
 
-  function getMoviesList(movie)  {
+  function getMoviesList(name)  {
     if (loggedIn) {
       setIsLoading(true);
-      movies.getMoviesCardList()
+      films.getMoviesCardList()
         .then((moviesList) => {
           localStorage.setItem('movies', JSON.stringify(moviesList));
+          setMovies(moviesList);
         })
         .catch((err) => console.log(err))
         .finally(() => setIsLoading(false));
@@ -125,56 +138,64 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Switch>
-          <Route path='/signin'>
+      <AppContext.Provider
+        value={{
+          loggedIn: loggedIn,
+          isLoading: isLoading,
+          movies: movies,
+        }}
+      >
+        <div className="page">
+          <Switch>
+            <Route path='/signin'>
+              {loggedIn ? (
+                <Redirect to='/' />
+              ) : (
+                <Login handleLogin={handleLogin} isSending={isSending} />
+              )}
+            </Route>
+            <Route path='/signup'>
             {loggedIn ? (
-              <Redirect to='/' />
-            ) : (
-              <Login handleLogin={handleLogin} isSending={isSending} />
-            )}
-          </Route>
-          <Route path='/signup'>
-          {loggedIn ? (
-              <Redirect to='/' />
-            ) : (
-              <Register handleRegister={handleRegister} isSending={isSending} />
-            )}
-          </Route>
-          <Route exact path='/'>
-            <Main loggedIn={loggedIn} />
-          </Route>
-          <ProtectedRoute
-            path='/movies'
-            component={Movies}
-            getMovies={getMoviesList}
-            isLoading={isLoading}
-            loggedIn={loggedIn}
+                <Redirect to='/' />
+              ) : (
+                <Register handleRegister={handleRegister} isSending={isSending} />
+              )}
+            </Route>
+            <Route exact path='/'>
+              <Main loggedIn={loggedIn} />
+            </Route>
+            <ProtectedRoute
+              path='/movies'
+              component={Movies}
+              getMovies={getMoviesList}
+              isLoading={isLoading}
+              loggedIn={loggedIn}
+            />
+            <ProtectedRoute
+              path='/saved-movies'
+              component={SavedMovies}
+              loggedIn={loggedIn}
+            />
+            <ProtectedRoute
+              path='/profile'
+              component={Profile}
+              loggedIn={loggedIn}
+              logout={handleLogout}
+              updateProfile={updateProfile}
+              isSending={isSending}
+              isLoading={isLoading}
+            />
+            <Route path='*'>
+              <PageNotFound />
+            </Route>
+          </Switch>
+          <InfoTooltip
+            isOpen={isInfoTooltopOpen}
+            onClose={closePopup}
+            isRegistered={isRegistered}
           />
-          <ProtectedRoute
-            path='/saved-movies'
-            component={SavedMovies}
-            loggedIn={loggedIn}
-          />
-          <ProtectedRoute
-            path='/profile'
-            component={Profile}
-            loggedIn={loggedIn}
-            logout={handleLogout}
-            updateProfile={updateProfile}
-            isSending={isSending}
-            isLoading={isLoading}
-          />
-          <Route path='*'>
-            <PageNotFound />
-          </Route>
-        </Switch>
-        <InfoTooltip
-          isOpen={isInfoTooltopOpen}
-          onClose={closePopup}
-          isRegistered={isRegistered}
-        />
-      </div>
+        </div>
+      </AppContext.Provider>
     </CurrentUserContext.Provider>
   );
 }

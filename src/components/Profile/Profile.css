@@ -59,6 +59,7 @@
   left: 0;
   top: 30px;
   width: 100%;
+  text-align: right;
 }
 
 .profile__button {
