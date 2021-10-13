@@ -2,16 +2,23 @@ import React from 'react';
 import './MovieCard.css';
 import { Route } from 'react-router-dom';
 
-function MovieCard(movie) {
+function MovieCard({ movie, duration, nameRU, image }) {
+
+  function transformTime(time) {
+    const hours = Math.trunc(time/60);
+    const minutes = time % 60;
+    return (hours + 'ч ' + minutes + 'м');
+  }
+
   return (
     <div className='movie-card'>
       <img
         className='movie-card__poster'
-        src={`https://api.nomoreparties.co${movie.image.url}`}
-        alt={movie.nameRu}
+        src={image}
+        alt={nameRU}
       />
       <div className='movie-card__strip'>
-        <h3 className='movie-card__name'>{movie.nameRu}</h3>
+        <h3 className='movie-card__name'>{nameRU}</h3>
         <Route path='/movies'>
           <button
             className='movie-card__button-like'
@@ -25,7 +32,7 @@ function MovieCard(movie) {
           />
         </Route>
       </div>
-      <div className='movie-card__duration'>{movie.duration}</div>
+      <div className='movie-card__duration'>{transformTime(duration)}</div>
     </div>
   );
 }

@@ -12,29 +12,19 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import InfoTooltip from '../InfoTooltip.js/InfoTooltip';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import * as main from '../../utils/MainApi';
-import * as films from '../../utils/MoviesApi';
 import { AppContext } from '../../contexts/AppContext';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isSending, setIsSending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [movies, setMovies] = useState([]);
+  const [userMovies, setUserMovies] = useState([]);
   const history = useHistory();
-
-  React.useEffect(() => {
-    Promise.all([main.getDataUser(), main.getMovies()])
-      .then(([currentUserData, currentSavedMovies]) => {
-
-      })
-      .catch((err) => console.log(err));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   React.useEffect(() => {
     checkToken();
@@ -100,7 +90,6 @@ function App() {
     if (jwt) {
       main.getDataUser(jwt)
         .then((res) => {
-          console.log(res);
           setCurrentUser(res.user);
           setLoggedIn(true);
           history.push('/movies');
@@ -109,12 +98,10 @@ function App() {
     };
   };
 
-  React.useEffect(() => console.log(currentUser));
-
   function handleLogout() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
-    setMovies([]);
+    setUserMovies([]);
     history.push('/');
   };
 
@@ -123,26 +110,12 @@ function App() {
     setIsRegistered(false);
   }
 
-  function getMoviesList(name)  {
-    if (loggedIn) {
-      setIsLoading(true);
-      films.getMoviesCardList()
-        .then((moviesList) => {
-          localStorage.setItem('movies', JSON.stringify(moviesList));
-          setMovies(moviesList);
-        })
-        .catch((err) => console.log(err))
-        .finally(() => setIsLoading(false));
-    };
-  };
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <AppContext.Provider
         value={{
           loggedIn: loggedIn,
           isLoading: isLoading,
-          movies: movies,
         }}
       >
         <div className="page">
@@ -167,7 +140,7 @@ function App() {
             <ProtectedRoute
               path='/movies'
               component={Movies}
-              getMovies={getMoviesList}
+              getMovies={userMovies}
               isLoading={isLoading}
               loggedIn={loggedIn}
             />
@@ -175,6 +148,7 @@ function App() {
               path='/saved-movies'
               component={SavedMovies}
               loggedIn={loggedIn}
+              getMovies={userMovies}
             />
             <ProtectedRoute
               path='/profile'
