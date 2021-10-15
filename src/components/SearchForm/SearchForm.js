@@ -5,7 +5,7 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import useFormWithValidation from '../../hooks/useFormAndValidation';
 
 function SearchForm({ isLoading, getMovies }) {
-  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+  const {values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
   const { name } = values;
 

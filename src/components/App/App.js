@@ -12,6 +12,7 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import InfoTooltip from '../InfoTooltip.js/InfoTooltip';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import * as main from '../../utils/MainApi';
+import * as movieApi from '../../utils/MoviesApi';
 import { AppContext } from '../../contexts/AppContext';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
@@ -23,6 +24,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isSending, setIsSending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [movies, setMovies] = useState([]);
   const [userMovies, setUserMovies] = useState([]);
   const history = useHistory();
 
@@ -30,6 +32,19 @@ function App() {
     checkToken();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  React.useEffect(() => {
+    Promise.all([main.getDataUser(), main.getUserMovies()])
+      .then(([userData, savedMovies]) => {
+        setCurrentUser(userData.user);
+        const lastSearchList = JSON.parse(localStorage.getItem('lastSearchList'));
+        lastSearchList && setMovies(lastSearchList);
+        setUserMovies(savedMovies.movies);
+        localStorage.setItem('savedMoviesList', JSON.stringify(savedMovies.movies));
+        setLoggedIn(true);
+      })
+      .catch((err) => console.log(err));
+  }, [loggedIn]);
 
   function handleRegister({ name, email, password }) {
     setIsSending(true);
@@ -40,6 +55,7 @@ function App() {
         main.authorize({ email, password })
           .then((res) => {
             localStorage.setItem('jwt', res.token);
+            getSavedMovies();
             setLoggedIn(true);
             history.push('/movies');
           })
@@ -59,6 +75,7 @@ function App() {
       .then((res) => {
         localStorage.setItem('jwt', res.token);
         setLoggedIn(true);
+        getSavedMovies();
         history.push('/movies');
       })
       .catch((err) => console.log(err))
@@ -92,6 +109,7 @@ function App() {
         .then((res) => {
           setCurrentUser(res.user);
           setLoggedIn(true);
+          getSavedMovies();
           history.push('/movies');
         })
         .catch((err) => console.log(err));
@@ -108,7 +126,57 @@ function App() {
   function closePopup() {
     setIsInfoTooltopOpen(false);
     setIsRegistered(false);
+  };
+
+  function getMoviesList(name) {
+    setIsLoading(true);
+    movieApi.getMoviesCardList()
+      .then((movies) => {
+        localStorage.setItem('movies', JSON.stringify(movies));
+        searchMovies(name);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  };
+
+  function searchMovies(name) {
+    const MoviesList = JSON.parse(localStorage.getItem('movies'));
+    const lastSearchList = MoviesList.filter((movie) => {
+      const nameEN = movie.nameEN ? movie.nameEN : movie.nameRU;
+      return (
+        movie.nameRU.toLowerCase().includes(name.toLowerCase()) ||
+        movie.description.toLowerCase().includes(name.toLowerCase()) ||
+        nameEN.toLowerCase().includes(name.toLowerCase())
+      );
+    });
+    setMovies(lastSearchList);
+    localStorage.setItem('lastSearchList', JSON.stringify(lastSearchList));
+    return lastSearchList;
   }
+
+  function getSavedMovies() {
+    main.getUserMovies()
+      .then((movies) => {
+        setUserMovies(movies);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  function deleteSavedMovie(id) {
+    main.deleteSavedMovie(id)
+      .then((res) => {
+        getSavedMovies();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  function addSavedMovie(movies) {
+    main.addNewMovie(movies)
+      .then(() => {
+        getSavedMovies();
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -116,6 +184,7 @@ function App() {
         value={{
           loggedIn: loggedIn,
           isLoading: isLoading,
+          movies: movies,
         }}
       >
         <div className="page">
@@ -140,15 +209,21 @@ function App() {
             <ProtectedRoute
               path='/movies'
               component={Movies}
-              getMovies={userMovies}
+              getMovies={getMoviesList}
               isLoading={isLoading}
               loggedIn={loggedIn}
+              savedMovies={userMovies}
+              onMovieLike={addSavedMovie}
+              onMovieDeleteLike={deleteSavedMovie}
             />
             <ProtectedRoute
               path='/saved-movies'
               component={SavedMovies}
               loggedIn={loggedIn}
               getMovies={userMovies}
+              savedMovies={userMovies}
+              onMovieLike={addSavedMovie}
+              onMovieDeleteLike={deleteSavedMovie}
             />
             <ProtectedRoute
               path='/profile'

@@ -69,7 +69,7 @@ export const patchDataUser = ({ name, email }) => {
   }).then(checkStatusResponse);
 };
 
-export const getMovies = () => {
+export const getUserMovies = () => {
   return fetch(`${MOVIES_SEARCH}/movies`, {
     method: 'GET',
     credentials: 'include',
@@ -79,3 +79,51 @@ export const getMovies = () => {
     },
   }).then(checkStatusResponse);
 };
+
+export const addNewMovie = (
+  country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+    owner,
+) => {
+  return fetch(`${MOVIES_SEARCH}/movies`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailer,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId,
+      owner,
+    ),
+  }).then(checkStatusResponse);
+};
+
+export const deleteSavedMovie = (_id) => {
+  return fetch(`${MOVIES_SEARCH}/movies/${_id}`, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  }).then(checkStatusResponse);
+}

@@ -4,7 +4,6 @@
   background-color: #222222;
   border-radius: 10px;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .movie-card__poster {
@@ -37,6 +36,11 @@
   border: none;
   cursor: pointer;
   transition: .3s linear;
+}
+
+.movie-card__button-like_active {
+  background-image:
+    url('../../images/heart_active.svg')
 }
 
 .movie-card__button-delete {

@@ -5,44 +5,33 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
-import * as movies from '../../utils/MoviesApi';
-import { filterForMovies } from '../../utils/utils';
+import { AppContext } from '../../contexts/AppContext';
 
-function Movies({ getMovies, isLoading }) {
-  const [initialMovies, setInitialMovies] = React.useState([]);
-
-  React.useEffect(() => {
-    const lastSavedMovies = localStorage.getItem('movies');
-      if (lastSavedMovies) {
-        setInitialMovies(JSON.parse(lastSavedMovies));
-      } else {
-        setInitialMovies([]);
-      }
-  }, []);
-
-  function getInitialMovies(name) {
-    setInitialMovies([]);
-    movies.getMoviesCardList()
-      .then((movies) => {
-        const moviesCards = movies.filter(movie => filterForMovies(movie, name));
-        setInitialMovies(moviesCards);
-        localStorage.setItem('movies', JSON.stringify(moviesCards));
-      })
-      .catch((err) => console.log(err));
-  }
+function Movies({
+  isLoading,
+  onMovieLike,
+  onMovieDeleteLike,
+  userMovies,
+  getMovies,
+}) {
+  const value = React.useContext(AppContext);
+  const movies = value.movies;
 
   return (
     <div>
       <Header />
       <SearchForm
         isLoading={isLoading}
-        getInitialMovies={getInitialMovies}
+        getMovies={getMovies}
       />
       {isLoading && <Preloader />}
-      {initialMovies &&
+      {movies && (
         <MoviesCardList
-          initialMovies={initialMovies}
-        />}
+          onMovieLike={onMovieLike}
+          onMovieDeleteLike={onMovieDeleteLike}
+          userMovies={userMovies}
+        />
+      )}
       <Footer />
     </div>
   );

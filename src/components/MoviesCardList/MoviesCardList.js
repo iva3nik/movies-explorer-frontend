@@ -2,11 +2,14 @@ import React from 'react';
 import './MoviesCardList.css';
 import MovieCard from '../MoviesCard/MovieCard';
 import { Route } from 'react-router-dom';
+import { AppContext } from '../../contexts/AppContext';
 
-function MoviesCardList({ initialMovies = [] }) {
+function MoviesCardList() {
+  const value = React.useContext(AppContext);
+  const movies = value.movies;
   const [countMovies, setCountMovies] = React.useState(0);
 
-  React.useEffect(() => handleAmountCards(), [initialMovies])
+  React.useEffect(() => handleAmountCards(), [movies])
 
   function handleAmountCards() {
     if (window.innerWidth > 1220) {
@@ -29,7 +32,7 @@ function MoviesCardList({ initialMovies = [] }) {
   return (
     <div className='movies-card-list'>
       <div className='movies-card-list__container'>
-        {initialMovies.slice(0, countMovies).map(movie => {
+        {movies.slice(0, countMovies).map(movie => {
           return (
             <MovieCard
               movie={movie}
@@ -37,6 +40,7 @@ function MoviesCardList({ initialMovies = [] }) {
               duration={movie.duration}
               nameRU={movie.nameRU}
               image={`https://api.nomoreparties.co${movie.image.url}`}
+              trailer={movie.trailer || movie.trailerLink}
             />
           )
         })}
