@@ -47,7 +47,7 @@ function MovieCard({
       >
         <img
           className='movie-card__poster'
-          src={image}
+          src={image || movie.image}
           alt={nameRU}
         />
       </a>

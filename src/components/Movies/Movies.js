@@ -13,20 +13,20 @@ function Movies({
   savedMovies,
 }) {
 
-  const [initialMovies, setinitialMovies] = React.useState([]);
+  const [initialMovies, setInitialMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     const lastSavedMovies = localStorage.getItem('movies');
       if (lastSavedMovies) {
-        setinitialMovies(JSON.parse(lastSavedMovies));
+        setInitialMovies(JSON.parse(lastSavedMovies));
       } else {
-        setinitialMovies([]);
+        setInitialMovies([]);
       }
   }, []);
 
   function getInitialMovies(name) {
-    setinitialMovies([]);
+    setInitialMovies([]);
     setIsLoading(true);
     moviesApi.getMoviesCardList()
       .then((movies) => {
@@ -50,7 +50,7 @@ function Movies({
         nameEN.toLowerCase().includes(name.toLowerCase())
       );
     });
-    setinitialMovies(lastSearchList);
+    setInitialMovies(lastSearchList);
     localStorage.setItem('lastSearchList', JSON.stringify(lastSearchList));
     lastSearchList.length === 0 &&
       setTimeout(() => console.log('Ничего не найдено'), 1000);
