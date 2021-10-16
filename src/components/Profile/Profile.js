@@ -5,19 +5,16 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import useFormWithValidation from '../../hooks/useFormAndValidation';
 import Preloader from '../Preloader/Preloader';
 
-function Profile({ logout, updateProfile, isSending, isLoading }) {
+function Profile({ logout, updateProfile, isLoading }) {
   const currentUser = React.useContext(CurrentUserContext);
 
-  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+  const { values, handleChange, errors, isValid } = useFormWithValidation();
 
   const { name, email } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid &&
-      updateProfile({ name, email }, () => {
-        resetForm();
-      });
+    isValid && updateProfile({ name, email });
   }
 
   return (
@@ -41,7 +38,6 @@ function Profile({ logout, updateProfile, isSending, isLoading }) {
               maxLength='40'
               onChange={handleChange}
               value={name || ''}
-              disabled={isSending}
             />
             <span className='profile__input-error'>{errors.name}</span>
           </label>
@@ -55,7 +51,6 @@ function Profile({ logout, updateProfile, isSending, isLoading }) {
               placeholder={currentUser.email}
               onChange={handleChange}
               value={email || ''}
-              disabled={isSending}
             />
             <span className='profile__input-error'>{errors.email}</span>
           </label>
@@ -66,7 +61,7 @@ function Profile({ logout, updateProfile, isSending, isLoading }) {
               'profile__button profile__edit profile__button_disabled'
             }
             type='submit'
-            disabled={!isValid || isSending}
+            disabled={!isValid}
           >
             {isValid ? 'Сохранить' : 'Редактировать'}
           </button>

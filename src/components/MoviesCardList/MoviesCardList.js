@@ -2,14 +2,17 @@ import React from 'react';
 import './MoviesCardList.css';
 import MovieCard from '../MoviesCard/MovieCard';
 import { Route } from 'react-router-dom';
-import { AppContext } from '../../contexts/AppContext';
 
-function MoviesCardList() {
-  const value = React.useContext(AppContext);
-  const movies = value.movies;
+function MoviesCardList({
+  onMovieLike,
+  onMovieDeleteLike,
+  savedMovies,
+  initialMovies = [],
+}) {
+
   const [countMovies, setCountMovies] = React.useState(0);
 
-  React.useEffect(() => handleAmountCards(), [movies])
+  React.useEffect(() => handleAmountCards(), [initialMovies.length]);
 
   function handleAmountCards() {
     if (window.innerWidth > 1220) {
@@ -32,15 +35,25 @@ function MoviesCardList() {
   return (
     <div className='movies-card-list'>
       <div className='movies-card-list__container'>
-        {movies.slice(0, countMovies).map(movie => {
+        {initialMovies.slice(0, countMovies).map(movie => {
           return (
             <MovieCard
+              onMovieLike={onMovieLike}
+              onMovieDeleteLike={onMovieDeleteLike}
+              savedMovies={savedMovies}
               movie={movie}
               key={movie.id}
+              country={movie.country}
+              director={movie.director}
               duration={movie.duration}
-              nameRU={movie.nameRU}
+              year={movie.year}
+              description={movie.description}
               image={`https://api.nomoreparties.co${movie.image.url}`}
-              trailer={movie.trailer || movie.trailerLink}
+              trailer={movie.trailerLink}
+              nameRU={movie.nameRU}
+              nameEN={movie.nameEN}
+              thumbnail={`https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`}
+              movieId={`${movie.id}`}
             />
           )
         })}

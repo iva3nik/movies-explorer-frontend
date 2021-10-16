@@ -5,31 +5,71 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
-import { AppContext } from '../../contexts/AppContext';
+import * as moviesApi from '../../utils/MoviesApi';
 
 function Movies({
-  isLoading,
   onMovieLike,
   onMovieDeleteLike,
-  userMovies,
-  getMovies,
+  savedMovies,
 }) {
-  const value = React.useContext(AppContext);
-  const movies = value.movies;
+
+  const [initialMovies, setinitialMovies] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const lastSavedMovies = localStorage.getItem('movies');
+      if (lastSavedMovies) {
+        setinitialMovies(JSON.parse(lastSavedMovies));
+      } else {
+        setinitialMovies([]);
+      }
+  }, []);
+
+  function getInitialMovies(name) {
+    setinitialMovies([]);
+    setIsLoading(true);
+    moviesApi.getMoviesCardList()
+      .then((movies) => {
+        localStorage.setItem('movies', JSON.stringify(movies));
+        searchMovies(name);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  };
+
+  function searchMovies(name) {
+    if(!name) {
+      console.log('Нужно ввести ключевое слово');
+      return;
+    };
+    const MoviesList = JSON.parse(localStorage.getItem('movies'));
+    const lastSearchList = MoviesList.filter((movie) => {
+      const nameEN = movie.nameEN ? movie.nameEN : movie.nameRU;
+      return (
+        movie.nameRU.toLowerCase().includes(name.toLowerCase()) ||
+        nameEN.toLowerCase().includes(name.toLowerCase())
+      );
+    });
+    setinitialMovies(lastSearchList);
+    localStorage.setItem('lastSearchList', JSON.stringify(lastSearchList));
+    lastSearchList.length === 0 &&
+      setTimeout(() => console.log('Ничего не найдено'), 1000);
+    return lastSearchList;
+  }
 
   return (
     <div>
       <Header />
       <SearchForm
-        isLoading={isLoading}
-        getMovies={getMovies}
+        getInitialMovies={getInitialMovies}
       />
       {isLoading && <Preloader />}
-      {movies && (
+      {initialMovies  && (
         <MoviesCardList
           onMovieLike={onMovieLike}
           onMovieDeleteLike={onMovieDeleteLike}
-          userMovies={userMovies}
+          initialMovies={initialMovies}
+          savedMovies={savedMovies}
         />
       )}
       <Footer />

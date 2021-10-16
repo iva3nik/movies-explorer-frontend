@@ -4,7 +4,7 @@ import logo from '../../images/logo.svg';
 import { Link } from 'react-router-dom';
 import useFormWithValidation from '../../hooks/useFormAndValidation';
 
-function Login({ handleLogin, isSending }) {
+function Login({ handleLogin }) {
 
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
@@ -39,7 +39,6 @@ function Login({ handleLogin, isSending }) {
               placeholder=''
               onChange={handleChange}
               value={email || ''}
-              disabled={isSending}
             />
             <span className='sign__input-error'>{errors.email}</span>
           </label>
@@ -55,7 +54,6 @@ function Login({ handleLogin, isSending }) {
               maxLength='40'
               onChange={handleChange}
               value={password || ''}
-              disabled={isSending}
             />
             <span className='sign__input-error'>{errors.password}</span>
           </label>
@@ -64,7 +62,7 @@ function Login({ handleLogin, isSending }) {
               isValid ? 'sign__button' : 'sign__button sign__button_disabled'
             }
             type='submit'
-            disabled={!isValid || isSending}
+            disabled={!isValid}
           >
             Войти
           </button>

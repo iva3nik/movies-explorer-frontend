@@ -4,14 +4,13 @@ import loupe from '../../images/loupe.svg';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import useFormWithValidation from '../../hooks/useFormAndValidation';
 
-function SearchForm({ isLoading, getMovies }) {
+function SearchForm({ getInitialMovies }) {
   const {values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
-
   const { name } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid && !isLoading && getMovies(name);
+    isValid && getInitialMovies(name);
     resetForm();
   }
 
@@ -20,8 +19,6 @@ function SearchForm({ isLoading, getMovies }) {
       <form
         className='search-form__strip'
         onSubmit={handleSubmit}
-        disabled={!isValid || isLoading}
-        noValidate
       >
         <img className='search-form__img-loupe' src={loupe} alt='Картинка лупы' />
         <input

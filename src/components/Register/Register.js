@@ -4,7 +4,7 @@ import logo from '../../images/logo.svg';
 import { Link } from 'react-router-dom';
 import useFormWithValidation from '../../hooks/useFormAndValidation';
 
-function Register({ handleRegister, isSending }) {
+function Register({ handleRegister }) {
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
   const { name, email, password } = values;
@@ -40,7 +40,6 @@ function Register({ handleRegister, isSending }) {
               maxLength='40'
               onChange={handleChange}
               value={name || ''}
-              disabled={isSending}
             />
             <span className='sign__input-error'>{errors.name}</span>
           </label>
@@ -54,7 +53,6 @@ function Register({ handleRegister, isSending }) {
               placeholder='i3n@yandxex.ru'
               onChange={handleChange}
               value={email || ''}
-              disabled={isSending}
             />
             <span className='sign__input-error'>{errors.email}</span>
           </label>
@@ -70,7 +68,6 @@ function Register({ handleRegister, isSending }) {
               maxLength='40'
               onChange={handleChange}
               value={password || ''}
-              disabled={isSending}
             />
             <span className='sign__input-error'>{errors.password}</span>
           </label>
@@ -79,7 +76,7 @@ function Register({ handleRegister, isSending }) {
               isValid ? 'sign__button' : 'sign__button sign__button_disabled'
             }
             type='submit'
-            disabled={!isValid || isSending}
+            disabled={!isValid}
           >
             Зарегистрироваться
           </button>

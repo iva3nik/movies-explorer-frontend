@@ -3,13 +3,33 @@ import './MovieCard.css';
 import { Route } from 'react-router-dom';
 
 function MovieCard({
-  duration,
-  nameRU,
-  image,
-  trailer,
+  onMovieLike, onMovieDeleteLike, savedMovies, movie,
+  country, director, duration, year, description,
+  image, trailer, nameRU, nameEN, thumbnail, movieId,
 }) {
+  const movieData = {
+    country, director, duration, year, description,
+    image, trailer, nameRU, nameEN, thumbnail, movieId,
+  };
+  const isLiked = savedMovies.some(
+    i => i.nameRU === nameRU
+  );
 
-  const isLiked = false;
+  function handleLike() {
+    if (isLiked) {
+      savedMovies.forEach((savedMovie) => {
+        if (savedMovie.nameRU === nameRU) {
+          onMovieDeleteLike(savedMovie._id);
+        }
+      });
+    } else {
+      onMovieLike(movieData);
+    }
+  };
+
+  function handleDeleteLike() {
+    onMovieDeleteLike(movie._id);
+  }
 
   function transformTime(time) {
     const hours = Math.trunc(time/60);
@@ -41,12 +61,14 @@ function MovieCard({
               'movie-card__button-like'
             }
             type='button'
+            onClick={handleLike}
           />
         </Route>
         <Route path='/saved-movies'>
           <button
             className='movie-card__button-delete'
             type='button'
+            onClick={handleDeleteLike}
           />
         </Route>
       </div>
