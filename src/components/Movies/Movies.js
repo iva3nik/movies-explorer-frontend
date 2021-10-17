@@ -11,6 +11,7 @@ function Movies({
   onMovieLike,
   onMovieDeleteLike,
   savedMovies,
+  location,
 }) {
 
   const [initialMovies, setInitialMovies] = React.useState([]);
@@ -86,6 +87,7 @@ function Movies({
           onMovieDeleteLike={onMovieDeleteLike}
           initialMovies={initialMovies}
           savedMovies={savedMovies}
+          location={location}
         />
       )}
       <Footer />

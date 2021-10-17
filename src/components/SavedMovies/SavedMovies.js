@@ -5,11 +5,12 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
-import * as moviesApi from '../../utils/MoviesApi';
+import * as main from '../../utils/MainApi';
 
 function SavedMovies({
   onMovieDelete,
   savedMovies,
+  location,
 }) {
 
   const [initialSavedMovies, setInitialSavedMovies] = React.useState([]);
@@ -19,7 +20,7 @@ function SavedMovies({
   function getInitialSavedMovies(name) {
     setInitialSavedMovies([]);
     setIsLoading(true);
-    moviesApi.getMoviesCardList()
+    main.getUserMovies()
       .then((movies) => {
       const savedMoviesCards = movies.filter((movie) => {
         const nameEN = movie.nameEN ? movie.nameEN : movie.nameRU;
@@ -28,7 +29,10 @@ function SavedMovies({
           nameEN.toLowerCase().includes(name.toLowerCase())
         );
       });
-      setInitialSavedMovies(savedMoviesCards);
+      setInitialSavedMovies(!shortMovieFilter
+        ? savedMoviesCards
+        : savedMoviesCards.filter(savedMovieCard => savedMovieCard.duration <= 40));
+      setShortMovieFilter(false);
     })
     .catch((err) => console.log(err))
     .finally(() => setIsLoading(false));
@@ -56,6 +60,7 @@ function SavedMovies({
               : savedMovies
           }
           savedMovies={savedMovies}
+          location={location}
         />
       )}
       <MoviesCardList />

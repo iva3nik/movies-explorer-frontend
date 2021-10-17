@@ -8,11 +8,13 @@ function MoviesCardList({
   onMovieDeleteLike,
   savedMovies,
   initialMovies = [],
+  location,
 }) {
 
   const [countMovies, setCountMovies] = React.useState(0);
 
-  React.useEffect(() => handleAmountCards(), [initialMovies.length]);
+  React.useEffect(() => handleAmountCards(),
+    [initialMovies]);
 
   function handleAmountCards() {
     if (window.innerWidth > 1220) {

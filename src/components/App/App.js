@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import './App.css';
-import { Route, Switch, Redirect, useHistory } from 'react-router';
+import { Route, Switch, Redirect, useHistory, useLocation } from 'react-router';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -16,7 +16,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +24,7 @@ function App() {
   const [serverError, setServerError] = React.useState(null)
   const [errorMessage, setErrorMessage] = useState(false);
   const history = useHistory();
+  const { pathname } = useLocation();
 
   React.useEffect(() => {
     checkToken();
@@ -52,6 +53,7 @@ function App() {
       .then((res) => {
         localStorage.setItem('jwt', res.token);
         setLoggedIn(true);
+        setCurrentUser(res.user);
         setServerError(null)
         history.push('/movies');
       })
@@ -171,6 +173,7 @@ function App() {
             onMovieLike={handleSavedMovie}
             onMovieDeleteLike={handleMovieDelete}
             savedMovies={userMovies}
+            location={pathname}
           />
           <ProtectedRoute
             path='/saved-movies'
@@ -178,6 +181,7 @@ function App() {
             loggedIn={loggedIn}
             onMovieDelete={handleMovieDelete}
             savedMovies={userMovies}
+            location={pathname}
           />
           <ProtectedRoute
             path='/profile'

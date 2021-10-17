@@ -8,20 +8,22 @@ import Preloader from '../Preloader/Preloader';
 function Profile({ logout, updateProfile, isLoading }) {
   const currentUser = React.useContext(CurrentUserContext);
 
-  const { values, handleChange, errors, isValid } = useFormWithValidation();
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
   const { name, email } = values;
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid && updateProfile({ name, email });
-  }
+    isValid && updateProfile({ name, email }, () => {
+      resetForm();
+    });
+}
 
   return (
     <div>
       <Header />
       <section className='profile'>
-        <h2 className='profile__title'>Привет, {currentUser.name}!</h2>
+        <h2 className='profile__title'>Привет, {name ? name : currentUser.name}!</h2>
         {isLoading ? (
           <Preloader />
         ) : (
@@ -33,11 +35,11 @@ function Profile({ logout, updateProfile, isLoading }) {
               required
               name='name'
               type='text'
-              placeholder={currentUser.name}
               minLength='2'
               maxLength='40'
               onChange={handleChange}
               value={name || ''}
+              placeholder={currentUser.name}
             />
             <span className='profile__input-error'>{errors.name}</span>
           </label>
@@ -48,9 +50,9 @@ function Profile({ logout, updateProfile, isLoading }) {
               required
               name='email'
               type='email'
-              placeholder={currentUser.email}
               onChange={handleChange}
               value={email || ''}
+              placeholder={currentUser.email}
             />
             <span className='profile__input-error'>{errors.email}</span>
           </label>

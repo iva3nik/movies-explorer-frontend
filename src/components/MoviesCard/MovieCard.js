@@ -37,7 +37,7 @@ function MovieCard({
     return (hours + 'ч ' + minutes + 'м');
   }
 
-  return (
+  /* return (
     <div className='movie-card'>
       <a
         href={trailer}
@@ -74,7 +74,68 @@ function MovieCard({
       </div>
       <div className='movie-card__duration'>{transformTime(duration)}</div>
     </div>
+  ); */
+
+  return (
+    <>
+      <Route path='/movies'>
+        <div className='movie-card'>
+          <a
+            href={trailer}
+            className='movei-card__trialer-link'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <img
+              className='movie-card__poster'
+              src={image}
+              alt={nameRU}
+            />
+          </a>
+          <div className='movie-card__strip'>
+            <h3 className='movie-card__name'>{nameRU}</h3>
+            <button
+              className={
+                isLiked ?
+                'movie-card__button-like movie-card__button-like_active' :
+                'movie-card__button-like'
+              }
+              type='button'
+              onClick={handleLike}
+            />
+          </div>
+          <div className='movie-card__duration'>{transformTime(duration)}</div>
+        </div>
+      </Route>
+      <Route path='/saved-movies'>
+        <div className='movie-card'>
+          <a
+            href={trailer}
+            className='movei-card__trialer-link'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <img
+              className='movie-card__poster'
+              src={movie.image}
+              alt={nameRU}
+            />
+          </a>
+          <div className='movie-card__strip'>
+            <h3 className='movie-card__name'>{nameRU}</h3>
+            <button
+              className='movie-card__button-delete'
+              type='button'
+              onClick={handleDeleteLike}
+            />
+          </div>
+          <div className='movie-card__duration'>{transformTime(duration)}</div>
+        </div>
+      </Route>
+    </>
   );
 }
+
+
 
 export default MovieCard;
