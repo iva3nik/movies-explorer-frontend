@@ -8,13 +8,13 @@ import Preloader from '../Preloader/Preloader';
 import * as moviesApi from '../../utils/MoviesApi';
 
 function SavedMovies({
-  loggedIn,
   onMovieDelete,
   savedMovies,
 }) {
 
   const [initialSavedMovies, setInitialSavedMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
 
   function getInitialSavedMovies(name) {
     setInitialSavedMovies([]);
@@ -34,11 +34,18 @@ function SavedMovies({
     .finally(() => setIsLoading(false));
   }
 
+  function handleCheckboxChange() {
+    setShortMovieFilter(!shortMovieFilter);
+  };
+
   return (
     <div>
       <Header />
       <SearchForm
         getInitialSavedMovies={getInitialSavedMovies}
+        handleCheckboxChange={handleCheckboxChange}
+        shortMovieFilter={shortMovieFilter}
+
       />
       {isLoading && <Preloader />}
       {savedMovies  && (

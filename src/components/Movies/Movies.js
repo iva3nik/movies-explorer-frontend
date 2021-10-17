@@ -15,6 +15,7 @@ function Movies({
 
   const [initialMovies, setInitialMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
 
   React.useEffect(() => {
     const lastSavedMovies = localStorage.getItem('movies');
@@ -23,7 +24,19 @@ function Movies({
       } else {
         setInitialMovies([]);
       }
+      setShortMovieFilter(false);
   }, []);
+
+  function handleCheckboxChange() {
+    setShortMovieFilter(!shortMovieFilter);
+    const lastSavedMovies = JSON.parse(localStorage.getItem('movies'));
+    if (!shortMovieFilter) {
+      const moviesFilter = lastSavedMovies.filter(movieCard => movieCard.duration <= 40);
+      setInitialMovies(moviesFilter);
+    } else {
+      setInitialMovies(lastSavedMovies)
+    };
+  };
 
   function getInitialMovies(name) {
     setInitialMovies([]);
@@ -52,6 +65,7 @@ function Movies({
     });
     setInitialMovies(lastSearchList);
     localStorage.setItem('lastSearchList', JSON.stringify(lastSearchList));
+    setShortMovieFilter(false);
     lastSearchList.length === 0 &&
       setTimeout(() => console.log('Ничего не найдено'), 1000);
     return lastSearchList;
@@ -62,6 +76,8 @@ function Movies({
       <Header />
       <SearchForm
         getInitialMovies={getInitialMovies}
+        handleCheckboxChange={handleCheckboxChange}
+        shortMovieFilter={shortMovieFilter}
       />
       {isLoading && <Preloader />}
       {initialMovies  && (

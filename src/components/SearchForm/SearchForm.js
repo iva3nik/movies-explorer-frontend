@@ -4,7 +4,11 @@ import loupe from '../../images/loupe.svg';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import useFormWithValidation from '../../hooks/useFormAndValidation';
 
-function SearchForm({ getInitialMovies }) {
+function SearchForm({
+  getInitialMovies,
+  handleCheckboxChange,
+  shortMovieFilter,
+}) {
   const {values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
   const { name } = values;
 
@@ -42,7 +46,10 @@ function SearchForm({ getInitialMovies }) {
         </button>
       </form>
       <span className='search__input-error'>{errors.name}</span>
-      <FilterCheckbox />
+      <FilterCheckbox
+        handleCheckboxChange={handleCheckboxChange}
+        shortMovieFilter={shortMovieFilter}
+      />
     </div>
   );
 }

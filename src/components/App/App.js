@@ -16,7 +16,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);

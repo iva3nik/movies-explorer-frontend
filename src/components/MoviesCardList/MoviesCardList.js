@@ -8,7 +8,6 @@ function MoviesCardList({
   onMovieDeleteLike,
   savedMovies,
   initialMovies = [],
-  location,
 }) {
 
   const [countMovies, setCountMovies] = React.useState(0);
@@ -44,15 +43,15 @@ function MoviesCardList({
               savedMovies={savedMovies}
               movie={movie}
               key={movie.id}
-              country={movie.country}
+              country={movie.country || 'Неизвестно'}
               director={movie.director}
               duration={movie.duration}
               year={movie.year}
               description={movie.description}
               image={`https://api.nomoreparties.co${movie.image.url}`}
               trailer={movie.trailerLink || movie.trailer}
-              nameRU={movie.nameRU}
-              nameEN={movie.nameEN}
+              nameRU={movie.nameRU || movie.nameEN}
+              nameEN={movie.nameEN || movie.nameRU}
               thumbnail={
                 movie.thumbnail ||
                   `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`
