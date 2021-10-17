@@ -1,25 +1,25 @@
 import React from 'react';
 import './MoviesCardList.css';
 import MovieCard from '../MoviesCard/MovieCard';
-import { Route } from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 
 function MoviesCardList({
   onMovieLike,
   onMovieDeleteLike,
   savedMovies,
   initialMovies = [],
-  location,
 }) {
-
+  const { pathname } = useLocation();
   const [countMovies, setCountMovies] = React.useState(0);
 
-  React.useEffect(() => handleAmountCards(),
-    [initialMovies]);
+  React.useEffect(() => {
+    pathname === '/movies' ? handleAmountCards() : setCountMovies(initialMovies.length);
+  }, [initialMovies, pathname]);
 
   function handleAmountCards() {
-    if (window.innerWidth > 1220) {
+    if (window.innerWidth > 1279) {
       setCountMovies(12);
-    } else if (window.innerWidth > 750) {
+    } else if (window.innerWidth > 767) {
       setCountMovies(8);
     } else {
       setCountMovies(5);
@@ -27,7 +27,7 @@ function MoviesCardList({
   }
 
   function addMoreMovies() {
-    if (window.innerWidth > 1220) {
+    if (window.innerWidth > 1279) {
       setCountMovies(countMovies + 3);
     } else {
       setCountMovies(countMovies + 2)
