@@ -25,6 +25,10 @@
   font-weight: 500;
   font-style: normal;
   margin: 0;
+  width: 290px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .movie-card__button-like {
@@ -98,6 +102,7 @@
   .movie-card__name {
     font-size: 12px;
     line-height: 15px;
+    width: 240px;
   }
 
   .movie-card__duration {

@@ -5,7 +5,7 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import useFormWithValidation from '../../hooks/useFormAndValidation';
 
 function SearchForm({
-  getInitialMovies,
+  getMovies,
   handleCheckboxChange,
   shortMovieFilter,
 }) {
@@ -14,7 +14,7 @@ function SearchForm({
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid && getInitialMovies(name);
+    isValid && getMovies(name);
     resetForm();
   }
 

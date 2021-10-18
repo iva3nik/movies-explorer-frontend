@@ -7,14 +7,14 @@ function MoviesCardList({
   onMovieLike,
   onMovieDeleteLike,
   savedMovies,
-  initialMovies = [],
+  movies = [],
 }) {
   const { pathname } = useLocation();
   const [countMovies, setCountMovies] = React.useState(0);
 
   React.useEffect(() => {
-    pathname === '/movies' ? handleAmountCards() : setCountMovies(initialMovies.length);
-  }, [initialMovies, pathname]);
+    pathname === '/movies' ? handleAmountCards() : setCountMovies(movies.length);
+  }, [movies, pathname]);
 
   function handleAmountCards() {
     if (window.innerWidth > 1279) {
@@ -37,7 +37,7 @@ function MoviesCardList({
   return (
     <div className='movies-card-list'>
       <div className='movies-card-list__container'>
-        {initialMovies.slice(0, countMovies).map(movie => {
+        {movies.slice(0, countMovies).map(movie => {
           return (
             <MovieCard
               onMovieLike={onMovieLike}
@@ -66,13 +66,13 @@ function MoviesCardList({
       <Route path='/movies'>
         <button
           className={
-            countMovies >= initialMovies.length
+            countMovies >= movies.length
               ? 'movies-card-list__button movies-card-list__button_disabled'
               : 'movies-card-list__button'
           }
           aria-label='ещё'
           onClick={addMoreMovies}
-          disabled={countMovies >= initialMovies.length}
+          disabled={countMovies >= movies.length}
         >
           Ещё
         </button>

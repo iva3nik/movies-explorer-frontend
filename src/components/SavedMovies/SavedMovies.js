@@ -4,63 +4,51 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Preloader from '../Preloader/Preloader';
-import * as main from '../../utils/MainApi';
 
 function SavedMovies({
   onMovieDelete,
   savedMovies,
-  location,
 }) {
 
-  const [initialSavedMovies, setInitialSavedMovies] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [movies, setMovies] = React.useState([]);
   const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
-
-  function getInitialSavedMovies(name) {
-    setInitialSavedMovies([]);
-    setIsLoading(true);
-    main.getUserMovies()
-      .then((movies) => {
-      const savedMoviesCards = movies.filter((movie) => {
-        const nameEN = movie.nameEN ? movie.nameEN : movie.nameRU;
-        return (
-          movie.nameRU.toLowerCase().includes(name.toLowerCase()) ||
-          nameEN.toLowerCase().includes(name.toLowerCase())
-        );
-      });
-      setInitialSavedMovies(!shortMovieFilter
-        ? savedMoviesCards
-        : savedMoviesCards.filter(savedMovieCard => savedMovieCard.duration <= 40));
-      setShortMovieFilter(false);
-    })
-    .catch((err) => console.log(err))
-    .finally(() => setIsLoading(false));
-  }
 
   function handleCheckboxChange() {
     setShortMovieFilter(!shortMovieFilter);
   };
 
+  function searchSavedMovies(name) {
+    if(!name) {
+      console.log('Нужно ввести ключевое слово');
+      return;
+    };
+    if (savedMovies) {
+      const savedMoviesList = savedMovies.filter((movie) => {
+        return (movie.nameRU.toLowerCase().includes(name.toLowerCase()) ||
+        (movie.nameEN !== null &&
+          movie.nameEN.toLowerCase().includes(name.toLowerCase())))
+      });
+      return setMovies(savedMoviesList);
+    }
+  }
+
   return (
     <div>
       <Header />
       <SearchForm
-        getInitialSavedMovies={getInitialSavedMovies}
+        getMovies={searchSavedMovies}
         handleCheckboxChange={handleCheckboxChange}
         shortMovieFilter={shortMovieFilter}
 
       />
-      {isLoading && <Preloader />}
       {savedMovies  && (
         <MoviesCardList
           onMovieDeleteLike={onMovieDelete}
-          initialMovies={initialSavedMovies.length > 0
-              ? initialSavedMovies
+          movies={movies.length > 0
+              ? movies
               : savedMovies
           }
           savedMovies={savedMovies}
-          location={location}
         />
       )}
       <MoviesCardList />

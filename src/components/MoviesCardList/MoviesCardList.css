@@ -23,7 +23,7 @@
 }
 
 .movies-card-list__button_disabled {
-  opacity: .6;
+  display: none;
 }
 
 .movies-card-list__button:hover {

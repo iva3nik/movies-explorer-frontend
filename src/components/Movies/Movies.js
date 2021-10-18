@@ -53,11 +53,9 @@ function Movies({
     };
     const MoviesList = JSON.parse(localStorage.getItem('movies'));
     const lastSearchList = MoviesList.filter((movie) => {
-      if (movie.nameRU.toLowerCase().includes(name) ||
-      (movie.nameEN !== null && movie.nameEN.toLowerCase().includes(name))) {
-        return movie;
-      }
-      return;
+      return (movie.nameRU.toLowerCase().includes(name.toLowerCase()) ||
+      (movie.nameEN !== null &&
+        movie.nameEN.toLowerCase().includes(name.toLowerCase())))
     });
     setMovies(lastSearchList);
     localStorage.setItem('lastSearchList', JSON.stringify(lastSearchList));
@@ -71,7 +69,7 @@ function Movies({
     <div>
       <Header />
       <SearchForm
-        getInitialMovies={getMovies}
+        getMovies={getMovies}
         handleCheckboxChange={handleCheckboxChange}
         shortMovieFilter={shortMovieFilter}
       />
@@ -80,7 +78,7 @@ function Movies({
         <MoviesCardList
           onMovieLike={onMovieLike}
           onMovieDeleteLike={onMovieDeleteLike}
-          initialMovies={movies}
+          movies={movies}
           savedMovies={savedMovies}
         />
       )}
