@@ -11,21 +11,16 @@ function Movies({
   onMovieLike,
   onMovieDeleteLike,
   savedMovies,
-  location,
 }) {
 
-  const [initialMovies, setInitialMovies] = React.useState([]);
+  const [movies, setMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
 
   React.useEffect(() => {
-    const lastSavedMovies = localStorage.getItem('movies');
-      if (lastSavedMovies) {
-        setInitialMovies(JSON.parse(lastSavedMovies));
-      } else {
-        setInitialMovies([]);
-      }
-      setShortMovieFilter(false);
+    const lastSearchList = JSON.parse(localStorage.getItem('lastSearchList'));
+    lastSearchList && setMovies(lastSearchList);
+    setShortMovieFilter(false);
   }, []);
 
   function handleCheckboxChange() {
@@ -33,14 +28,14 @@ function Movies({
     const lastSavedMovies = JSON.parse(localStorage.getItem('movies'));
     if (!shortMovieFilter) {
       const moviesFilter = lastSavedMovies.filter(movieCard => movieCard.duration <= 40);
-      setInitialMovies(moviesFilter);
+      setMovies(moviesFilter);
     } else {
-      setInitialMovies(lastSavedMovies)
+      setMovies(lastSavedMovies)
     };
   };
 
-  function getInitialMovies(name) {
-    setInitialMovies([]);
+  function getMovies(name) {
+    setMovies([]);
     setIsLoading(true);
     moviesApi.getMoviesCardList()
       .then((movies) => {
@@ -58,13 +53,13 @@ function Movies({
     };
     const MoviesList = JSON.parse(localStorage.getItem('movies'));
     const lastSearchList = MoviesList.filter((movie) => {
-      const nameEN = movie.nameEN ? movie.nameEN : movie.nameRU;
-      return (
-        movie.nameRU.toLowerCase().includes(name.toLowerCase()) ||
-        nameEN.toLowerCase().includes(name.toLowerCase())
-      );
+      if (movie.nameRU.toLowerCase().includes(name) ||
+      (movie.nameEN !== null && movie.nameEN.toLowerCase().includes(name))) {
+        return movie;
+      }
+      return;
     });
-    setInitialMovies(lastSearchList);
+    setMovies(lastSearchList);
     localStorage.setItem('lastSearchList', JSON.stringify(lastSearchList));
     setShortMovieFilter(false);
     lastSearchList.length === 0 &&
@@ -76,18 +71,17 @@ function Movies({
     <div>
       <Header />
       <SearchForm
-        getInitialMovies={getInitialMovies}
+        getInitialMovies={getMovies}
         handleCheckboxChange={handleCheckboxChange}
         shortMovieFilter={shortMovieFilter}
       />
       {isLoading && <Preloader />}
-      {initialMovies  && (
+      {movies  && (
         <MoviesCardList
           onMovieLike={onMovieLike}
           onMovieDeleteLike={onMovieDeleteLike}
-          initialMovies={initialMovies}
+          initialMovies={movies}
           savedMovies={savedMovies}
-          location={location}
         />
       )}
       <Footer />
