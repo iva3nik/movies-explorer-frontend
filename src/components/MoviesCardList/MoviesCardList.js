@@ -65,9 +65,14 @@ function MoviesCardList({
       </div>
       <Route path='/movies'>
         <button
-          className='movies-card-list__button'
+          className={
+            countMovies >= initialMovies.length
+              ? 'movies-card-list__button movies-card-list__button_disabled'
+              : 'movies-card-list__button'
+          }
           aria-label='ещё'
           onClick={addMoreMovies}
+          disabled={countMovies >= initialMovies.length}
         >
           Ещё
         </button>

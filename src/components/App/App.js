@@ -30,6 +30,20 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function checkToken() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      main.getDataUser(jwt)
+        .then((res) => {
+          setCurrentUser(res.user);
+          setLoggedIn(true);
+          getSavedMoviesCards();
+          history.push('/movies');
+        })
+        .catch((err) => console.log(err));
+    };
+  };
+
   function handleRegister({ name, email, password }) {
     main.register({ name, email, password })
       .then((res) => {
@@ -94,26 +108,18 @@ function App() {
       });
   };
 
-  function checkToken() {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      main.getDataUser(jwt)
-        .then((res) => {
-          setCurrentUser(res.user);
-          setLoggedIn(true);
-          getSavedMoviesCards();
-          history.push('/movies');
-        })
-        .catch((err) => console.log(err));
-    };
-  };
-
-  function handleLogout() {
-    setLoggedIn(false);
-    localStorage.removeItem('jwt');
-    setUserMovies([]);
-    setCurrentUser({});
-    history.push('/');
+  function handleLogout({ email }) {
+    main.logout({ email })
+      .then(() => {
+        setLoggedIn(false);
+        localStorage.removeItem('jwt');
+        localStorage.removeItem('movies');
+        localStorage.removeItem('lastSearchList');
+        setUserMovies([]);
+        setCurrentUser({});
+        history.push('/');
+      })
+      .catch((err) => console.log(err));
   };
 
   function closePopup() {
