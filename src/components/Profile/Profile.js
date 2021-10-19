@@ -12,6 +12,12 @@ function Profile({ logout, updateProfile, isLoading }) {
 
   const { name, email } = values;
 
+  function handleLogout() {
+    logout({
+      email: currentUser.email,
+    });
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     isValid && updateProfile({ name, email }, () => {
@@ -58,20 +64,30 @@ function Profile({ logout, updateProfile, isLoading }) {
           </label>
           <button
             className={
-              isValid ?
-              'profile__button profile__edit' :
-              'profile__button profile__edit profile__button_disabled'
+              isValid &&
+              ((currentUser.name !== name) || (currentUser.email !== email))
+                ? 'profile__button profile__edit'
+                : 'profile__button profile__edit profile__button_disabled'
             }
             type='submit'
-            disabled={!isValid}
+            disabled={
+              !isValid &&
+              (currentUser.name === name) &&
+              (currentUser.email === email)
+            }
           >
-            {isValid ? 'Сохранить' : 'Редактировать'}
+            {
+              isValid &&
+              ((currentUser.name !== name) || (currentUser.email !== email))
+                ? 'Сохранить'
+                : 'Редактировать'
+            }
           </button>
         </form>
         )}
         <button
           className='profile__button profile__logout'
-          onClick={logout}
+          onClick={handleLogout}
           type='button'
         >
           Выйти из аккаунта

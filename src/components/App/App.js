@@ -65,9 +65,7 @@ function App() {
     main.authorize({ email, password })
       .then((res) => {
         localStorage.setItem('jwt', res.token);
-        setLoggedIn(true);
-        setCurrentUser(res.user);
-        getSavedMoviesCards();
+        checkToken();
         setServerError(null)
         history.push('/movies');
       })
