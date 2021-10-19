@@ -18,6 +18,7 @@ function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [isInfoTooltopOpen, setIsInfoTooltopOpen] = useState(false);
+  const [infoPopupTitle, setInfoPopupTitle] = useState({ title: '', });
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userMovies, setUserMovies] = useState([]);
@@ -48,10 +49,12 @@ function App() {
     main.register({ name, email, password })
       .then((res) => {
         setServerError(null);
+        openPopup('Вы успешно зарегестрировались')
         setIsInfoTooltopOpen(true);
         handleLogin({ email, password });
       })
       .catch((err) => {
+        openPopupError('Что-то пошло не так! Попробуйте ещё раз.')
         if (err === 'Ошибка: 409') {
           setServerError(409);
         } else if (err === 'Ошибка: 400') {
@@ -90,8 +93,7 @@ function App() {
             email: res.email,
           });
           setServerError(null);
-          setErrorMessage(false);
-          setIsInfoTooltopOpen(true);
+          openPopup('Данные обновлены!')
         };
       })
       .catch((err) => {
@@ -99,8 +101,7 @@ function App() {
           setServerError(400);
         }
         console.log(err);
-        setErrorMessage(true);
-        setIsInfoTooltopOpen(true);
+        openPopupError('Что-то пошло не так! Попробуйте ещё раз.')
       })
       .finally(() => {
         setIsLoading(false);
@@ -120,6 +121,16 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
+
+  function openPopupError(title) {
+    setErrorMessage(true);
+    setInfoPopupTitle({ title });
+  }
+
+  function openPopup(title) {
+    setErrorMessage(false);
+    setInfoPopupTitle({ title });
+  }
 
   function closePopup() {
     setIsInfoTooltopOpen(false);
@@ -203,6 +214,7 @@ function App() {
           isOpen={isInfoTooltopOpen}
           onClose={closePopup}
           error={errorMessage}
+          title={infoPopupTitle.title}
         />
       </div>
     </CurrentUserContext.Provider>

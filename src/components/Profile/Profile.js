@@ -23,7 +23,7 @@ function Profile({ logout, updateProfile, isLoading }) {
     isValid && updateProfile({ name, email }, () => {
       resetForm();
     });
-}
+  }
 
   return (
     <div>

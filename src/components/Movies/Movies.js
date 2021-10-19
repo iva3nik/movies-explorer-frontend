@@ -5,6 +5,7 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
+import NotFoundMovies from '../NotFoundMovies/NotFoundMovies';
 import * as moviesApi from '../../utils/MoviesApi';
 
 function Movies({
@@ -16,6 +17,7 @@ function Movies({
   const [movies, setMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
+  const [message, setMessage] = React.useState('');
 
   React.useEffect(() => {
     const lastSearchList = JSON.parse(localStorage.getItem('lastSearchList'));
@@ -43,12 +45,15 @@ function Movies({
         searchMovies(name);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        setMessage('');
+      });
   };
 
   function searchMovies(name) {
     if(!name) {
-      console.log('Нужно ввести ключевое слово');
+      setMessage('Нужно ввести ключевое слово');
       return;
     };
     const MoviesList = JSON.parse(localStorage.getItem('movies'));
@@ -61,7 +66,7 @@ function Movies({
     localStorage.setItem('lastSearchList', JSON.stringify(lastSearchList));
     setShortMovieFilter(false);
     lastSearchList.length === 0 &&
-      setTimeout(() => console.log('Ничего не найдено'), 1000);
+      setTimeout(() => setMessage('Ничего не найдено'), 100);
     return lastSearchList;
   }
 
@@ -74,6 +79,7 @@ function Movies({
         shortMovieFilter={shortMovieFilter}
       />
       {isLoading && <Preloader />}
+      {message && <NotFoundMovies message={message}/>}
       {movies  && (
         <MoviesCardList
           onMovieLike={onMovieLike}
