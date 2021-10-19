@@ -12,8 +12,12 @@ function FilterCheckbox({ handleCheckboxChange, shortMovieFilter }) {
         onChange={handleCheckboxChange}
       />
       <label htmlFor='switch' className='filter-checkbox__label'></label>
-      <p className='filter-checkbox__text'>
-        {shortMovieFilter ? 'Короткометражки' : 'Полная галерея'}
+      <p className={
+        !shortMovieFilter ? 'filter-checkbox__text filter-checkbox__text_long'
+        : 'filter-checkbox__text'
+        }
+      >
+        {shortMovieFilter ? 'Короткометражки' : ' Полная галерея'}
       </p>
     </div>
   );

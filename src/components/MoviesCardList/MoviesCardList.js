@@ -17,9 +17,9 @@ function MoviesCardList({
   }, [movies, pathname]);
 
   function handleAmountCards() {
-    if (window.innerWidth > 1279) {
+    if (window.innerWidth >= 1220) {
       setCountMovies(12);
-    } else if (window.innerWidth > 767) {
+    } else if (window.innerWidth >= 657) {
       setCountMovies(8);
     } else {
       setCountMovies(5);
@@ -27,7 +27,7 @@ function MoviesCardList({
   }
 
   function addMoreMovies() {
-    if (window.innerWidth > 1279) {
+    if (window.innerWidth >= 1220) {
       setCountMovies(countMovies + 3);
     } else {
       setCountMovies(countMovies + 2)
@@ -51,7 +51,8 @@ function MoviesCardList({
               year={movie.year}
               description={movie.description}
               image={`https://api.nomoreparties.co${movie.image.url}`}
-              trailer={movie.trailerLink || movie.trailer}
+              trailer={movie.trailerLink ||
+                `https://api.nomoreparties.co${movie.image.url}`}
               nameRU={movie.nameRU || movie.nameEN}
               nameEN={movie.nameEN || movie.nameRU}
               thumbnail={

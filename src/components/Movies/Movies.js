@@ -25,12 +25,12 @@ function Movies({
 
   function handleCheckboxChange() {
     setShortMovieFilter(!shortMovieFilter);
-    const lastSavedMovies = JSON.parse(localStorage.getItem('movies'));
+    const lastFoundMovies = JSON.parse(localStorage.getItem('lastSearchList'));
     if (!shortMovieFilter) {
-      const moviesFilter = lastSavedMovies.filter(movieCard => movieCard.duration <= 40);
+      const moviesFilter = lastFoundMovies.filter(movieCard => movieCard.duration <= 40);
       setMovies(moviesFilter);
     } else {
-      setMovies(lastSavedMovies)
+      setMovies(lastFoundMovies)
     };
   };
 

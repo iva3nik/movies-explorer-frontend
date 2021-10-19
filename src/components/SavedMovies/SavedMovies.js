@@ -39,7 +39,6 @@ function SavedMovies({
         getMovies={searchSavedMovies}
         handleCheckboxChange={handleCheckboxChange}
         shortMovieFilter={shortMovieFilter}
-
       />
       {savedMovies  && (
         <MoviesCardList
