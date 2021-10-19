@@ -99,9 +99,10 @@ function App() {
       .catch((err) => {
         if (err === 'Ошибка: 400') {
           setServerError(400);
+          openPopupError('Что-то пошло не так! Попробуйте ещё раз.')
         }
-        console.log(err);
         openPopupError('Что-то пошло не так! Попробуйте ещё раз.')
+        console.log(err);
       })
       .finally(() => {
         setIsLoading(false);

@@ -44,7 +44,10 @@ function Movies({
         localStorage.setItem('movies', JSON.stringify(movies));
         searchMovies(name);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err);
+        setMessage('Во время запроса произошла ошибка.Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.')
+      })
       .finally(() => {
         setIsLoading(false);
         setMessage('');
