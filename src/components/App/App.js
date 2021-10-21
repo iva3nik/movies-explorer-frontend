@@ -25,7 +25,6 @@ function App() {
   const [userMovies, setUserMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
-  const [serverError, setServerError] = React.useState(null)
   const [errorMessage, setErrorMessage] = useState(false);
   const [message, setMessage] = useState('');
   const history = useHistory();
@@ -67,6 +66,7 @@ function App() {
 
   function getMovies(name) {
     setMovies([]);
+    setMessage('');
     setIsLoading(true);
     moviesApi.getMoviesCardList()
       .then((movies) => {
@@ -75,7 +75,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        console.log('Во время запроса произошла ошибка.Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.')
+        setMessage('Во время запроса произошла ошибка.Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.')
       })
       .finally(() => {
         setIsLoading(false);
@@ -126,18 +126,11 @@ function App() {
   function handleRegister({ name, email, password }) {
     main.register({ name, email, password })
       .then((res) => {
-        setServerError(null);
         openPopup('Вы успешно зарегестрировались')
-        setIsInfoTooltopOpen(true);
         handleLogin({ email, password });
       })
       .catch((err) => {
         openPopupError('Что-то пошло не так! Попробуйте ещё раз.')
-        if (err === 'Ошибка: 409') {
-          setServerError(409);
-        } else if (err === 'Ошибка: 400') {
-          setServerError(400);
-        }
         console.log(err);
       });
   };
@@ -147,15 +140,10 @@ function App() {
       .then((res) => {
         localStorage.setItem('jwt', res.token);
         checkToken();
-        setServerError(null)
         history.push('/movies');
       })
       .catch((err) => {
-        if (err === 'Ошибка: 401') {
-          setServerError(401);
-        } else if (err === 'Ошибка: 400') {
-          setServerError(400);
-        }
+        openPopupError('Что-то пошло не так! Попробуйте ещё раз.')
         console.log(err);
       })
   };
@@ -164,21 +152,10 @@ function App() {
     setIsLoading(true);
     main.patchDataUser({ name, email })
       .then((res) => {
-        if (res) {
-          setCurrentUser({
-            ...currentUser,
-            name: res.name,
-            email: res.email,
-          });
-          setServerError(null);
-          openPopup('Данные обновлены!')
-        };
-      })
+          setCurrentUser(res.user);
+          openPopup('Данные обновлены!');
+        })
       .catch((err) => {
-        if (err === 'Ошибка: 400') {
-          setServerError(400);
-          openPopupError('Что-то пошло не так! Попробуйте ещё раз.')
-        }
         openPopupError('Что-то пошло не так! Попробуйте ещё раз.')
         console.log(err);
       })
@@ -206,16 +183,25 @@ function App() {
   function openPopupError(title) {
     setErrorMessage(true);
     setInfoPopupTitle({ title });
+    setIsInfoTooltopOpen(true);
   }
 
   function openPopup(title) {
     setErrorMessage(false);
     setInfoPopupTitle({ title });
+    setIsInfoTooltopOpen(true);
   }
 
   function closePopup() {
     setIsInfoTooltopOpen(false);
   };
+
+  function checkLike(movie) {
+    if (userMovies) {
+      return userMovies.some((i) => movie.nameRU === i.nameRU);
+    }
+    return false;
+  }
 
   function likeMovie(movie) {
     main.addNewMovie({
@@ -264,13 +250,6 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
-
-  function checkLike(movie) {
-    if (userMovies) {
-      return userMovies.some((i) => movie.nameRU === i.nameRU);
-    }
-    return false;
-  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -323,8 +302,6 @@ function App() {
             logout={handleLogout}
             updateProfile={updateProfile}
             isLoading={isLoading}
-            serverError={serverError}
-            errorMessage={errorMessage}
           />
           <Route path='*'>
             <PageNotFound />

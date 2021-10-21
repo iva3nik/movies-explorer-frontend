@@ -35,7 +35,6 @@ function Register({ handleRegister }) {
               required
               name='name'
               type='text'
-              placeholder='Ivan'
               minLength='2'
               maxLength='40'
               onChange={handleChange}
@@ -50,7 +49,6 @@ function Register({ handleRegister }) {
               required
               name='email'
               type='email'
-              placeholder='i3n@yandxex.ru'
               onChange={handleChange}
               value={email || ''}
             />
@@ -63,7 +61,6 @@ function Register({ handleRegister }) {
               required
               name='password'
               type='text'
-              placeholder='Ivan'
               minLength='2'
               maxLength='40'
               onChange={handleChange}
