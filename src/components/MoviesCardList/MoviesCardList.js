@@ -6,8 +6,8 @@ import { Route, useLocation } from 'react-router-dom';
 function MoviesCardList({
   onMovieLike,
   onMovieDeleteLike,
-  savedMovies,
   movies = [],
+  checkLike,
 }) {
   const { pathname } = useLocation();
   const [countMovies, setCountMovies] = React.useState(0);
@@ -36,34 +36,19 @@ function MoviesCardList({
 
   return (
     <div className='movies-card-list'>
-      <div className='movies-card-list__container'>
-        {movies.slice(0, countMovies).map(movie => {
-          return (
-            <MovieCard
-              onMovieLike={onMovieLike}
-              onMovieDeleteLike={onMovieDeleteLike}
-              savedMovies={savedMovies}
-              movie={movie}
-              key={movie.id}
-              country={movie.country || 'Неизвестно'}
-              director={movie.director}
-              duration={movie.duration}
-              year={movie.year}
-              description={movie.description}
-              image={`https://api.nomoreparties.co${movie.image.url}`}
-              trailer={movie.trailerLink ||
-                `https://api.nomoreparties.co${movie.image.url}`}
-              nameRU={movie.nameRU || movie.nameEN}
-              nameEN={movie.nameEN || movie.nameRU}
-              thumbnail={
-                movie.thumbnail ||
-                  `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`
-              }
-              movieId={`${movie.id}`}
-            />
-          )
-        })}
-      </div>
+        <div className='movies-card-list__container'>
+          {movies.slice(0, countMovies).map(movie => {
+            return (
+              <MovieCard
+                onMovieLike={onMovieLike}
+                onMovieDeleteLike={onMovieDeleteLike}
+                movie={movie}
+                checkLike={checkLike}
+                key={movie.movieId}
+              />
+            )
+          })}
+        </div>
       <Route path='/movies'>
         <button
           className={

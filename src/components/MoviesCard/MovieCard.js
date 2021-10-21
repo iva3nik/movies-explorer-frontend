@@ -3,33 +3,20 @@ import './MovieCard.css';
 import { Route, useLocation } from 'react-router-dom';
 
 function MovieCard({
-  onMovieLike, onMovieDeleteLike, savedMovies, movie,
-  country, director, duration, year, description,
-  image, trailer, nameRU, nameEN, thumbnail, movieId,
+  onMovieLike,
+  onMovieDeleteLike,
+  movie,
+  checkLike,
 }) {
-  const movieData = {
-    country, director, duration, year, description,
-    image, trailer, nameRU, nameEN, thumbnail, movieId,
-  };
-  const isLiked = savedMovies.some(
-    i => i.nameRU === nameRU
-  );
   const { pathname } = useLocation();
+  const isLiked = checkLike(movie);
 
   function handleLike() {
-    if (isLiked) {
-      savedMovies.forEach((savedMovie) => {
-        if (savedMovie.nameRU === nameRU) {
-          onMovieDeleteLike(savedMovie._id);
-        }
-      });
-    } else {
-      onMovieLike(movieData);
-    }
+   onMovieLike(movie)
   };
 
   function handleDeleteLike() {
-    onMovieDeleteLike(movie._id);
+    onMovieDeleteLike(movie);
   }
 
   function transformTime(time) {
@@ -41,19 +28,23 @@ function MovieCard({
   return (
     <div className='movie-card'>
       <a
-        href={trailer}
+        href={movie.trailerLink}
         className='movei-card__trialer-link'
         target='_blank'
         rel='noopener noreferrer'
       >
         <img
           className='movie-card__poster'
-          src={pathname === '/movies' ? image : movie.image}
-          alt={nameRU}
+          src={
+            pathname === '/movies'
+              ? `https://api.nomoreparties.co${movie.image.url}`
+              : movie.image
+          }
+          alt={movie.nameRU || movie.nameEN}
         />
       </a>
       <div className='movie-card__strip'>
-        <h3 className='movie-card__name'>{nameRU}</h3>
+        <h3 className='movie-card__name'>{movie.nameRU || movie.nameEN}</h3>
         <Route path='/movies'>
           <button
             className={
@@ -62,7 +53,7 @@ function MovieCard({
               'movie-card__button-like'
             }
             type='button'
-            onClick={handleLike}
+            onClick={!isLiked ? handleLike : handleDeleteLike}
           />
         </Route>
         <Route path='/saved-movies'>
@@ -73,7 +64,7 @@ function MovieCard({
           />
         </Route>
       </div>
-      <div className='movie-card__duration'>{transformTime(duration)}</div>
+      <div className='movie-card__duration'>{transformTime(movie.duration)}</div>
     </div>
   );
 }
