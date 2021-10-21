@@ -231,9 +231,6 @@ function App() {
   function handleMovieDelete(movie) {
     main.deleteSavedMovie(movie._id)
       .then((res) => {
-        const savedMovies = userMovies.filter((i) => i._id !== movie._id);
-        setUserMovies(savedMovies);
-        localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
         getUserMovies();
       })
       .catch((err) => console.log(err));

@@ -6,6 +6,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import NotFoundMovies from '../NotFoundMovies/NotFoundMovies';
+import * as main from '../../utils/MainApi';
 
 function SavedMovies({
   onMovieDelete,
@@ -13,6 +14,12 @@ function SavedMovies({
   isLoading,
   checkLike,
 }) {
+  React.useEffect(() => {
+    main.getUserMovies()
+      .then((dataUserMovies) => {setUserMovies(dataUserMovies.movies)})
+      .catch((err) => console.log(err));
+  }, [movies])
+
   const [userMovies, setUserMovies] = React.useState(movies);
   const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
   const [message, setMessage] = React.useState('');
@@ -57,7 +64,7 @@ function SavedMovies({
       />
       {isLoading && <Preloader />}
       {message && <NotFoundMovies message={message} />}
-      {userMovies  && (
+      {userMovies  && !message && (
         <MoviesCardList
           onMovieDeleteLike={onMovieDelete}
           checkLike={checkLike}
