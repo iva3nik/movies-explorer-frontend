@@ -109,22 +109,6 @@ function App() {
     return lastSearchList;
   }
 
-  function searchSavedMovies(name) {
-    const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
-    if(!name) {
-      console.log('Нужно ввести ключевое слово');
-      return;
-    };
-    if (savedMovies) {
-      const searchMoviesList = savedMovies.filter((movie) => {
-        return (movie.nameRU.toLowerCase().includes(name.toLowerCase()) ||
-        (movie.nameEN !== null &&
-          movie.nameEN.toLowerCase().includes(name.toLowerCase())))
-      });
-      return setUserMovies(searchMoviesList);
-    }
-  }
-
   function handleCheckboxChange() {
     setShortMovieFilter(!shortMovieFilter);
     const lastFoundMovies = JSON.parse(localStorage.getItem('lastSearchList'));
@@ -236,8 +220,10 @@ function App() {
       year: movie.year,
       description: movie.description,
       image: `https://api.nomoreparties.co${movie.image.url}`,
-      trailer: movie.trailerLink ||
-        `https://api.nomoreparties.co${movie.image.url}`,
+      trailer: (movie.trailerLink.includes('https://')
+        ? movie.trailerLink
+        : `https://api.nomoreparties.co${movie.image.url}`)
+          || `https://api.nomoreparties.co${movie.image.url}`,
       nameRU: movie.nameRU || movie.nameEN,
       nameEN: movie.nameEN || movie.nameRU,
       thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
@@ -257,6 +243,7 @@ function App() {
         const savedMovies = userMovies.filter((i) => i._id !== movie._id);
         setUserMovies(savedMovies);
         localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+        getUserMovies();
       })
       .catch((err) => console.log(err));
   };
@@ -320,9 +307,6 @@ function App() {
             loggedIn={loggedIn}
             onMovieDelete={handleMovieDelete}
             movies={userMovies}
-            getMovies={searchSavedMovies}
-            handleCheckboxChange={handleCheckboxChange}
-            shortMovieFilter={shortMovieFilter}
             isLoading={isLoading}
             checkLike={checkLike}
           />
