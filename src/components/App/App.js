@@ -46,22 +46,19 @@ function App() {
   }, [loggedIn]);
 
   React.useEffect(() => {
-    checkToken();
+    const token = localStorage.getItem('jwt');
+    checkToken(token);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function checkToken() {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      main.getDataUser(jwt)
-        .then((res) => {
-          setCurrentUser(res.user);
-          getUserMovies();
-          setLoggedIn(true);
-          history.push('/movies');
-        })
-        .catch((err) => console.log(err));
-    };
+  function checkToken(token) {
+    return main.getDataUser(token)
+      .then((res) => {
+        setCurrentUser(res.user);
+        getUserMovies();
+        setLoggedIn(true);
+      })
+      .catch((err) => console.log(err));
   };
 
   function getMovies(name) {
@@ -139,7 +136,7 @@ function App() {
     main.authorize({ email, password })
       .then((res) => {
         localStorage.setItem('jwt', res.token);
-        checkToken();
+        checkToken(res.token);
         history.push('/movies');
       })
       .catch((err) => {
