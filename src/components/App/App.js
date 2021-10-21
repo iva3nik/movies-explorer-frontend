@@ -194,7 +194,9 @@ function App() {
         localStorage.removeItem('jwt');
         localStorage.removeItem('movies');
         localStorage.removeItem('lastSearchList');
+        localStorage.removeItem('savedMovies');
         setUserMovies([]);
+        setMovies([]);
         setCurrentUser({});
         history.push('/');
       })
