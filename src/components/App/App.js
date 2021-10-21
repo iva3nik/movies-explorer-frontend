@@ -30,7 +30,8 @@ function App() {
   const history = useHistory();
 
   React.useEffect(() => {
-    Promise.all([main.getDataUser(), main.getUserMovies()])
+    if (loggedIn) {
+      Promise.all([main.getDataUser(), main.getUserMovies()])
       .then(([dataUserInfo, dataUserMovies]) => {
         setCurrentUser(dataUserInfo.user);
         setUserMovies(dataUserMovies.movies);
@@ -42,12 +43,13 @@ function App() {
         history.push('/movies');
       })
       .catch((err) => console.log(err));
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn]);
 
   React.useEffect(() => {
     const token = localStorage.getItem('jwt');
-    checkToken(token);
+    if (token) {checkToken(token);}
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
