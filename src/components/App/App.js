@@ -56,6 +56,7 @@ function App() {
       main.getDataUser(jwt)
         .then((res) => {
           setCurrentUser(res.user);
+          getUserMovies();
           setLoggedIn(true);
           history.push('/movies');
         })
@@ -79,6 +80,14 @@ function App() {
         setIsLoading(false);
         console.log('');
       });
+  };
+
+  function getUserMovies() {
+    main.getUserMovies()
+      .then((dataUserMovies) => {
+        setUserMovies(dataUserMovies.movies);
+      })
+      .catch((err) => console.log(err));
   };
 
   function searchMovies(name) {
@@ -259,6 +268,7 @@ function App() {
         const savedMovies = userMovies.filter((i) => i._id !== movie._id);
         setUserMovies(savedMovies);
         localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+        getUserMovies();
       })
       .catch((err) => console.log(err));
   };
