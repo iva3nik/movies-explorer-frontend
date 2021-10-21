@@ -2,20 +2,22 @@ import React from 'react';
 import './SearchForm.css';
 import loupe from '../../images/loupe.svg';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
-import useFormWithValidation from '../../hooks/useFormAndValidation';
 
 function SearchForm({
   getMovies,
   handleCheckboxChange,
   shortMovieFilter,
 }) {
-  const {values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
-  const { name } = values;
+
+  const [name, setName] = React.useState('');
+
+  function handleChange(e) {
+    setName(e.target.value);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    isValid && getMovies(name);
-    resetForm();
+    getMovies(name);
   }
 
   return (
@@ -29,23 +31,16 @@ function SearchForm({
           className='search-form__string'
           type='text'
           placeholder='Фильм'
-          required
           name='name'
           onChange={handleChange}
           value={name || ''}
         />
         <button
-          className={
-            isValid ?
-              'search-form__button' :
-              'search-form__button search-form__button_disabled'
-          }
+          className={'search-form__button'}
           type='submit'
-          disabled={!isValid}
         >
         </button>
       </form>
-      <span className='search__input-error'>{errors.name}</span>
       <FilterCheckbox
         handleCheckboxChange={handleCheckboxChange}
         shortMovieFilter={shortMovieFilter}

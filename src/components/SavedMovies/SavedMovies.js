@@ -5,6 +5,7 @@ import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
+import NotFoundMovies from '../NotFoundMovies/NotFoundMovies';
 
 function SavedMovies({
   onMovieDelete,
@@ -14,6 +15,7 @@ function SavedMovies({
 }) {
   const [userMovies, setUserMovies] = React.useState(movies);
   const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
+  const [message, setMessage] = React.useState('');
 
   function handleCheckboxChange() {
     setShortMovieFilter(!shortMovieFilter);
@@ -29,8 +31,9 @@ function SavedMovies({
   function searchSavedMovies(name) {
     const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
     setShortMovieFilter(false);
+    setMessage('');
     if(!name) {
-      console.log('Нужно ввести ключевое слово');
+      setMessage('Нужно ввести ключевое слово');
       return;
     };
     if (savedMovies) {
@@ -39,6 +42,7 @@ function SavedMovies({
         (movie.nameEN !== null &&
           movie.nameEN.toLowerCase().includes(name.toLowerCase())))
       });
+      if (searchMoviesList.length === 0) {setMessage('Ничего не найдено')};
       return setUserMovies(searchMoviesList);
     }
   }
@@ -52,6 +56,7 @@ function SavedMovies({
         shortMovieFilter={shortMovieFilter}
       />
       {isLoading && <Preloader />}
+      {message && <NotFoundMovies message={message} />}
       {userMovies  && (
         <MoviesCardList
           onMovieDeleteLike={onMovieDelete}

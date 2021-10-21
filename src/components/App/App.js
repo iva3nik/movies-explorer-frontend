@@ -27,6 +27,7 @@ function App() {
   const [shortMovieFilter, setShortMovieFilter] = React.useState(false);
   const [serverError, setServerError] = React.useState(null)
   const [errorMessage, setErrorMessage] = useState(false);
+  const [message, setMessage] = useState('');
   const history = useHistory();
 
   React.useEffect(() => {
@@ -92,7 +93,7 @@ function App() {
 
   function searchMovies(name) {
     if(!name) {
-      console.log('Нужно ввести ключевое слово');
+      setMessage('Нужно ввести ключевое слово');
       return;
     };
     const MoviesList = JSON.parse(localStorage.getItem('movies'));
@@ -104,8 +105,10 @@ function App() {
     setMovies(lastSearchList);
     localStorage.setItem('lastSearchList', JSON.stringify(lastSearchList));
     setShortMovieFilter(false);
-    lastSearchList.length === 0 &&
-      setTimeout(() => console.log('Ничего не найдено'), 100);
+    if(lastSearchList.length === 0) {
+      setTimeout(() => setMessage('Ничего не найдено'), 100);
+    }
+    setMessage('');
     return lastSearchList;
   }
 
@@ -300,6 +303,7 @@ function App() {
             shortMovieFilter={shortMovieFilter}
             isLoading={isLoading}
             checkLike={checkLike}
+            message={message}
           />
           <ProtectedRoute
             path='/saved-movies'

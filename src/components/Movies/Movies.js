@@ -16,6 +16,7 @@ function Movies({
   shortMovieFilter,
   isLoading,
   checkLike,
+  message,
 }) {
 
   return (
@@ -27,7 +28,7 @@ function Movies({
         shortMovieFilter={shortMovieFilter}
       />
       {isLoading && <Preloader />}
-      {/* {message && <NotFoundMovies message={message}/>} */}
+      {message && <NotFoundMovies message={message}/>}
       {movies  && (
         <MoviesCardList
           onMovieLike={onMovieLike}
