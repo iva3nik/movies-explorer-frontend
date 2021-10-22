@@ -7,6 +7,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import NotFoundMovies from '../NotFoundMovies/NotFoundMovies';
 import * as main from '../../utils/MainApi';
+import { DURATION_SHORT_MOVIE } from '../../utils/constants';
 
 function SavedMovies({
   onMovieDelete,
@@ -28,7 +29,8 @@ function SavedMovies({
     setShortMovieFilter(!shortMovieFilter);
     const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
     if (!shortMovieFilter) {
-      const moviesFilter = savedMovies.filter(movieCard => movieCard.duration <= 40);
+      const moviesFilter = savedMovies
+        .filter(movieCard => movieCard.duration <= DURATION_SHORT_MOVIE);
       setUserMovies(moviesFilter);
     } else {
       setUserMovies(savedMovies)

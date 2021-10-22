@@ -1,2 +1,10 @@
 export const BEATFILM_MOVIES = 'https://api.nomoreparties.co/beatfilm-movies';
 export const MOVIES_SEARCH = 'https://api.iva3diploma.nomoredomains.club';
+export const DURATION_SHORT_MOVIE = 40;
+export const MOVIES_FOR_LARGE_SCREEN = 12;
+export const MOVIES_FOR_AVAREGE_SCREEN = 8;
+export const MOVIES_FOR_SMALL_SCREEN = 5;
+export const LARGE_SCREEN = 1220;
+export const AVAREGE_SCREEN = 657;
+export const MOVIES_ADD_LARGE_SCREEN = 3;
+export const MOVIES_ADD_AVAREGE_SCREEN = 2;

@@ -2,6 +2,15 @@ import React from 'react';
 import './MoviesCardList.css';
 import MovieCard from '../MoviesCard/MovieCard';
 import { Route, useLocation } from 'react-router-dom';
+import {
+  MOVIES_FOR_LARGE_SCREEN,
+  MOVIES_FOR_AVAREGE_SCREEN,
+  MOVIES_FOR_SMALL_SCREEN,
+  LARGE_SCREEN,
+  AVAREGE_SCREEN,
+  MOVIES_ADD_LARGE_SCREEN,
+  MOVIES_ADD_AVAREGE_SCREEN,
+} from '../../utils/constants';
 
 function MoviesCardList({
   onMovieLike,
@@ -17,20 +26,20 @@ function MoviesCardList({
   }, [movies, pathname]);
 
   function handleAmountCards() {
-    if (window.innerWidth >= 1220) {
-      setCountMovies(12);
-    } else if (window.innerWidth >= 657) {
-      setCountMovies(8);
+    if (window.innerWidth >= LARGE_SCREEN) {
+      setCountMovies(MOVIES_FOR_LARGE_SCREEN);
+    } else if (window.innerWidth >= AVAREGE_SCREEN) {
+      setCountMovies(MOVIES_FOR_AVAREGE_SCREEN);
     } else {
-      setCountMovies(5);
+      setCountMovies(MOVIES_FOR_SMALL_SCREEN);
     }
   }
 
   function addMoreMovies() {
-    if (window.innerWidth >= 1220) {
-      setCountMovies(countMovies + 3);
+    if (window.innerWidth >= LARGE_SCREEN) {
+      setCountMovies(countMovies + MOVIES_ADD_LARGE_SCREEN);
     } else {
-      setCountMovies(countMovies + 2)
+      setCountMovies(countMovies + MOVIES_ADD_AVAREGE_SCREEN)
     }
   };
 

@@ -14,6 +14,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import * as main from '../../utils/MainApi';
 import * as moviesApi from '../../utils/MoviesApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { DURATION_SHORT_MOVIE } from '../../utils/constants';
 
 function App() {
 
@@ -115,7 +116,8 @@ function App() {
     setShortMovieFilter(!shortMovieFilter);
     const lastFoundMovies = JSON.parse(localStorage.getItem('lastSearchList'));
     if (!shortMovieFilter) {
-      const moviesFilter = lastFoundMovies.filter(movieCard => movieCard.duration <= 40);
+      const moviesFilter = lastFoundMovies
+        .filter(movieCard => movieCard.duration <= DURATION_SHORT_MOVIE);
       setMovies(moviesFilter);
     } else {
       setMovies(lastFoundMovies)
