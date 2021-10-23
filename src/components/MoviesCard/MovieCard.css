@@ -4,7 +4,6 @@
   background-color: #222222;
   border-radius: 10px;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .movie-card__poster {
@@ -26,6 +25,10 @@
   font-weight: 500;
   font-style: normal;
   margin: 0;
+  width: 290px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .movie-card__button-like {
@@ -37,6 +40,11 @@
   border: none;
   cursor: pointer;
   transition: .3s linear;
+}
+
+.movie-card__button-like_active {
+  background-image:
+    url('../../images/heart_active.svg')
 }
 
 .movie-card__button-delete {
@@ -94,6 +102,7 @@
   .movie-card__name {
     font-size: 12px;
     line-height: 15px;
+    width: 240px;
   }
 
   .movie-card__duration {

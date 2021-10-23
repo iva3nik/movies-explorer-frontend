@@ -1,0 +1,15 @@
+.not-found-movies__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+.not-found-movies__title {
+  font-size: 14px;;
+  line-height: 18px;
+  font-style: normal;
+  font-weight: normal;
+  color: white;
+  text-align: center;
+}

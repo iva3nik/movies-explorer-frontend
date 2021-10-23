@@ -22,6 +22,10 @@
   transition: .3s linear;
 }
 
+.movies-card-list__button_disabled {
+  display: none;
+}
+
 .movies-card-list__button:hover {
   opacity: .6;
 }

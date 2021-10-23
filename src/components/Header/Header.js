@@ -6,8 +6,7 @@ import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import Navigation from '../Navigation/Navigation';
 import Account from '../Account/Account';
 
-function Header() {
-  const loggedIn = false;
+function Header({ loggedIn }) {
 
   return (
    <>

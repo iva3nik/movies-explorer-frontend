@@ -1,5 +1,8 @@
 .search-form {
   padding: 70px 70px 49px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .search-form__strip {
@@ -28,6 +31,15 @@
   color: #FFF;
 }
 
+.search__input-error {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #EE3465;
+  text-align: center;
+}
+
 .search-form__button {
   background-image:
     url('../../images/find.svg');
@@ -37,6 +49,10 @@
   border: none;
   cursor: pointer;
   transition: .3s linear;
+}
+
+.search-form__button_disabled {
+  opacity: .6;
 }
 
 .search-form__button:hover {
