@@ -1,4 +1,4 @@
-# Backend дипломного проекта (Реализован на React)
+# Frontend дипломного проекта (Реализован на React)
 
 # Ссылка на проект
 http://iva3diploma.nomoredomains.club
